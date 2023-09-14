@@ -12,7 +12,7 @@ import GmButton from "./core/GmButton";
 import SendIcon from "./icons/SendIcon";
 import SubscribeIcon from "./icons/SubscribeIcon";
 
-const PushSubscription = ({ address }: { address: string }) => {
+const NotifySubscription = () => {
   const { account: w3iAccount } = useW3iAccount();
   const { isSubscribed } = useManageSubscription({
     account: w3iAccount,
@@ -33,8 +33,7 @@ const PushSubscription = ({ address }: { address: string }) => {
           handleSendNotification({
             title: "gm hackers!",
             body: NOTIFICATION_BODY,
-            // href already contains the trailing slash
-            icon: `${window.location.href}gm.png`,
+            icon: `${window.location.origin}/gm.png`,
             url: "https://dev.gm.walletconnect.com/",
             type: "gm_hourly",
           })
@@ -47,4 +46,4 @@ const PushSubscription = ({ address }: { address: string }) => {
   );
 };
 
-export default PushSubscription;
+export default NotifySubscription;

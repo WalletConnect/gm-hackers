@@ -19,7 +19,7 @@ function useSendNotification() {
       setIsSending(true);
       try {
         // Construct the payload, including the target `accounts`
-        // that should receive the push notification.
+        // that should receive the notification.
         const notificationPayload = {
           accounts: [account],
           notification,

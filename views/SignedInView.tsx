@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import truncate from "smart-truncate";
 
-import PushSubscription from "../components/PushSubscription";
+import NotifySubscription from "../components/NotifySubscription";
 import CopyIcon from "../components/icons/CopyIcon";
 import GmCard from "../components/core/GmCard";
 import Zorb from "../components/icons/Zorb";
@@ -70,7 +70,7 @@ const SignedInView: React.FC = () => {
             ? "You are subscribed to GM. Now you can send test notifications from the dApp."
             : "Connect your wallet to the widget and enable notifications first in order to send and receive notifications."}
         </Text>
-        {address && <PushSubscription address={address} />}
+        <NotifySubscription />
       </GmCard>
     </Box>
   );
