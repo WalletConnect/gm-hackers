@@ -1,6 +1,6 @@
 import { useToast } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
-import { useAccount } from "@web3inbox/widget-react";
+import { useW3iAccount } from "@web3inbox/widget-react";
 
 interface INotification {
   title: string;
@@ -12,7 +12,7 @@ interface INotification {
 function useSendNotification() {
   const [isSending, setIsSending] = useState<boolean>(false);
   const toast = useToast();
-  const { account } = useAccount();
+  const { account } = useW3iAccount();
 
   const handleSendNotification = useCallback(
     async (notification: INotification) => {

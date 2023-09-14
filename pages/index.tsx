@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import {
   useManageView,
-  useAccount as useW3iAccount,
+  useW3iAccount,
   W3iWidget,
 } from "@web3inbox/widget-react";
 import "@web3inbox/widget-react/dist/compiled.css";
@@ -45,7 +45,7 @@ const Home: NextPage = () => {
   );
 
   const ref = useRef(null);
-  const { setAccount } = useW3iAccount(signMessage);
+  const { account, setAccount, register } = useW3iAccount();
   const [currentAddress, setCurrentAddress] = useState<`0x${string}`>();
   const { close: closeW3I } = useManageView();
   const { close, open } = useWeb3Modal();
@@ -56,7 +56,13 @@ const Home: NextPage = () => {
     if (!address) return;
     setCurrentAddress(address);
     setAccount(`eip155:1:${address}`);
-  }, [address, setAccount]);
+  }, [address, setAccount, register, signMessage]);
+
+  useEffect(() => {
+    if (!account) {
+      register(signMessage);
+    }
+  }, [register, signMessage, account]);
 
   const connect = useCallback(async () => {
     if (!connector) return open();

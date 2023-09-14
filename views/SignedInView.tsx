@@ -14,10 +14,7 @@ import CopyIcon from "../components/icons/CopyIcon";
 import GmCard from "../components/core/GmCard";
 import Zorb from "../components/icons/Zorb";
 import { useAccount } from "wagmi";
-import {
-  useAccount as useW3iAccount,
-  useManageSubscription,
-} from "@web3inbox/widget-react";
+import { useW3iAccount, useManageSubscription } from "@web3inbox/widget-react";
 
 const SignedInView: React.FC = () => {
   const { address } = useAccount({

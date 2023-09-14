@@ -1,7 +1,7 @@
 "use client";
 import { Flex } from "@chakra-ui/react";
 import {
-  useAccount as useW3iAccount,
+  useW3iAccount,
   useManageSubscription,
   useManageView,
 } from "@web3inbox/widget-react";
@@ -29,15 +29,16 @@ const NotifySubscription = () => {
       )}
       <GmButton
         leftIcon={<SendIcon isDisabled={!isSubscribed || isSending} />}
-        onClick={async () =>
+        onClick={async (e) => {
+          e.preventDefault();
           handleSendNotification({
             title: "gm hackers!",
             body: NOTIFICATION_BODY,
             icon: `${window.location.origin}/eth-global.png`,
             url: "https://dev.gm.walletconnect.com/",
             type: "gm_hourly",
-          })
-        }
+          });
+        }}
         isDisabled={!isSubscribed || isSending}
       >
         Send notification
