@@ -1,5 +1,9 @@
 import { Flex } from "@chakra-ui/react";
-import { useIsSubscribed, useManageW3iWidget } from "@web3inbox/widget-react";
+import {
+  useAccount,
+  useManageSubscription,
+  useManageView,
+} from "@web3inbox/widget-react";
 import React from "react";
 import { useSnapshot } from "valtio";
 import { widgetStore } from "../stores/widgetStore";
@@ -15,8 +19,9 @@ if (!projectId) {
 }
 
 const PushSubscription = ({ address }: { address: string }) => {
-  const isSubscribed = useIsSubscribed();
-  const { open } = useManageW3iWidget();
+  const { account } = useAccount();
+  const { isSubscribed } = useManageSubscription({ account });
+  const { open } = useManageView();
   const { handleSendNotification, isSending } = useSendNotification();
   const { isSubscribed: hasSubscribed } = useSnapshot(widgetStore);
 

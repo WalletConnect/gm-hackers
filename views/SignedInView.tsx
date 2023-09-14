@@ -15,7 +15,10 @@ import GmCard from "../components/core/GmCard";
 import Zorb from "../components/core/Zorb";
 import useThemeColor from "../styles/useThemeColors";
 import { useAccount } from "wagmi";
-import { useIsSubscribed } from "@web3inbox/widget-react";
+import {
+  useManageSubscription,
+  useAccount as useW3iAccount,
+} from "@web3inbox/widget-react";
 
 const SignedInView: React.FC = () => {
   const { address } = useAccount({
@@ -23,7 +26,8 @@ const SignedInView: React.FC = () => {
       window.location.reload();
     },
   });
-  const isSubscribed = useIsSubscribed();
+  const { account } = useW3iAccount();
+  const { isSubscribed } = useManageSubscription({ account });
   const { onCopy, hasCopied } = useClipboard(address ?? "");
   const { actionTextColor, defaultFontColor } = useThemeColor();
 

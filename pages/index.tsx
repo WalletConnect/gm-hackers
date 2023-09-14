@@ -1,6 +1,9 @@
 "use client";
 import { Box, Flex, keyframes, useColorMode } from "@chakra-ui/react";
-import { useInitWeb3InboxClient } from "@web3inbox/widget-react";
+import {
+  useInitWeb3InboxClient,
+  useAccount as useW3iAccount,
+} from "@web3inbox/widget-react";
 import "@web3inbox/widget-react/dist/compiled.css";
 
 import type { NextPage } from "next";
@@ -93,6 +96,8 @@ const Home: NextPage = () => {
     },
     [signMessageAsync]
   );
+
+  const acc = useW3iAccount(signMessage);
 
   const handleIsSubscribed = useCallback(async () => {
     if (!currentAddress) {
