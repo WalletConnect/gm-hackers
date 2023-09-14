@@ -10,12 +10,14 @@ import {
 import truncate from "smart-truncate";
 
 import PushSubscription from "../components/PushSubscription";
-import CopyIcon from "../components/core/CopyIcon";
+import CopyIcon from "../components/icons/CopyIcon";
 import GmCard from "../components/core/GmCard";
-import Zorb from "../components/core/Zorb";
-import useThemeColor from "../styles/useThemeColors";
+import Zorb from "../components/icons/Zorb";
 import { useAccount } from "wagmi";
-import { useIsSubscribed } from "@web3inbox/widget-react";
+import {
+  useAccount as useW3iAccount,
+  useManageSubscription,
+} from "@web3inbox/widget-react";
 
 const SignedInView: React.FC = () => {
   const { address } = useAccount({
@@ -23,9 +25,9 @@ const SignedInView: React.FC = () => {
       window.location.reload();
     },
   });
-  const isSubscribed = useIsSubscribed();
+  const { account } = useW3iAccount();
+  const { isSubscribed } = useManageSubscription({ account });
   const { onCopy, hasCopied } = useClipboard(address ?? "");
-  const { actionTextColor, defaultFontColor } = useThemeColor();
 
   return (
     <Box w="360px">
@@ -38,7 +40,7 @@ const SignedInView: React.FC = () => {
         <Flex flexDirection="column" alignItems="center" mt="8px" mb="24px">
           {address ? (
             <HStack>
-              <Text fontWeight="600" fontSize={"20px"} color={defaultFontColor}>
+              <Text fontWeight="600" fontSize={"20px"}>
                 {truncate(address, 9, { position: 4 })}
               </Text>
               <IconButton
@@ -59,7 +61,6 @@ const SignedInView: React.FC = () => {
 
         <Text
           textAlign={"center"}
-          color={actionTextColor}
           fontSize="14px"
           fontWeight={500}
           mb="24px"

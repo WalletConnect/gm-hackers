@@ -1,7 +1,7 @@
 import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
-import ThemeSwitcher from "../ThemeSwitcher";
-import WalletConnectIcon from "./WalletConnectIcon";
+import ThemeSwitcher from "./ThemeSwitcher";
+import WalletConnectIcon from "../icons/WalletConnectIcon";
 
 function Footer() {
   const fontColor = useColorModeValue("#9EA9A9", "#6E7777");

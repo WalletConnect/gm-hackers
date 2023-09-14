@@ -6,7 +6,7 @@ const Page404 = () => {
     <Flex minHeight="100vh" direction="column" justifyContent="center">
       <Box marginY={4}>
         <Heading textAlign="center" size="lg">
-          Page not Found.
+          Page not found.
         </Heading>
 
         <Flex
@@ -20,16 +20,7 @@ const Page404 = () => {
             It&apos;s Okay!
           </Text>
           <Link href="/">
-            <Button
-              padding={2}
-              backgroundColor="brand.400"
-              rounded="xl"
-              color="white"
-              _hover={{
-                border: "solid 1px #3396FF",
-                backgroundColor: "black",
-              }}
-            >
+            <Button padding={2} rounded="xl">
               Let&apos;s Head Back
             </Button>
           </Link>

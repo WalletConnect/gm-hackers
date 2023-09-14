@@ -62,7 +62,9 @@ const DefaultView = () => {
           >
             <Flex gap="1em">
               <Image src="/wc.png" fit="scale-down" alt="WC" />
-              <span style={{ color: "white" }}>Connect Wallet</span>
+              <Box as="span" color="white">
+                Connect Wallet
+              </Box>
             </Flex>
           </Button>
         </Flex>
