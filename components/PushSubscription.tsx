@@ -31,14 +31,12 @@ const PushSubscription = ({ address }: { address: string }) => {
         leftIcon={<SendIcon isDisabled={!isSubscribed || isSending} />}
         onClick={async () =>
           handleSendNotification({
-            notification: {
-              title: "gm hackers!",
-              body: NOTIFICATION_BODY,
-              // href already contains the trailing slash
-              icon: `${window.location.href}gm.png`,
-              url: "https://dev.gm.walletconnect.com/",
-              type: "gm_hourly",
-            },
+            title: "gm hackers!",
+            body: NOTIFICATION_BODY,
+            // href already contains the trailing slash
+            icon: `${window.location.href}gm.png`,
+            url: "https://dev.gm.walletconnect.com/",
+            type: "gm_hourly",
           })
         }
         isDisabled={!isSubscribed || isSending}

@@ -3,13 +3,11 @@ import { useCallback, useState } from "react";
 import { useAccount } from "@web3inbox/widget-react";
 
 interface INotification {
-  notification: {
-    title: string;
-    body: string;
-    icon: string;
-    url: string;
-    type: string;
-  };
+  title: string;
+  body: string;
+  icon: string;
+  url: string;
+  type: string;
 }
 function useSendNotification() {
   const [isSending, setIsSending] = useState<boolean>(false);
@@ -17,7 +15,7 @@ function useSendNotification() {
   const { account } = useAccount();
 
   const handleSendNotification = useCallback(
-    async ({ notification }: INotification) => {
+    async (notification: INotification) => {
       setIsSending(true);
       try {
         // Construct the payload, including the target `accounts`
@@ -41,8 +39,8 @@ function useSendNotification() {
 
         toast({
           status: success ? "success" : "error",
-          colorScheme: success ? "whatsapp" : "red",
           position: "top",
+          variant: "subtle",
           title:
             message ?? success
               ? `Message sent`

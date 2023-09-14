@@ -1,4 +1,6 @@
 "use client";
+import type { NextPage } from "next";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import {
   useManageView,
@@ -7,15 +9,13 @@ import {
 } from "@web3inbox/widget-react";
 import "@web3inbox/widget-react/dist/compiled.css";
 
-import type { NextPage } from "next";
-import { useCallback, useEffect, useRef, useState } from "react";
-
-import DefaultView from "../views/DefaultView";
-import SignedInView from "../views/SignedInView";
 import { useWeb3Modal } from "@web3modal/react";
 import { useAccount, useSignMessage } from "wagmi";
 import dynamic from "next/dynamic";
 import { useOnClickOutside } from "usehooks-ts";
+
+import DefaultView from "../views/DefaultView";
+import SignedInView from "../views/SignedInView";
 
 const Web3ModalButton = dynamic(
   () => import("@web3modal/react").then((w3m) => w3m.Web3Button),
@@ -94,7 +94,6 @@ const Home: NextPage = () => {
           right={"36px"}
           alignItems="center"
           gap="16px"
-          zIndex={1}
         >
           <Box
             ref={ref}
