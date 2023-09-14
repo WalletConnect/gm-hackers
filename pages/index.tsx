@@ -1,12 +1,7 @@
 "use client";
 import { Box, Flex, keyframes, useColorMode } from "@chakra-ui/react";
-import {
-  W3iContext,
-  W3iWidget,
-  W3iButton,
-  useManageW3iWidget,
-  useIsSubscribed,
-} from "@web3inbox/widget-react";
+import { useInitWeb3InboxClient } from "@web3inbox/widget-react";
+import "@web3inbox/widget-react/dist/compiled.css";
 
 import type { NextPage } from "next";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -29,6 +24,7 @@ const animationKeyframes = keyframes`
 `;
 
 const animation = `${animationKeyframes} 1.5s ease-in`;
+const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
 const Web3ModalButton = dynamic(
   () => import("@web3modal/react").then((w3m) => w3m.Web3Button),
@@ -36,10 +32,16 @@ const Web3ModalButton = dynamic(
     ssr: false,
   }
 );
+const W3iWidget = dynamic(
+  () => import("@web3inbox/widget-react").then((w3i) => w3i.W3iWidget),
+  {
+    ssr: false,
+  }
+);
 
 const Home: NextPage = () => {
   const [view, changeView] = useState<"default" | "qr" | "signedIn">("default");
-  const { close: closeWidget, isOpen } = useManageW3iWidget();
+  // const { close: closeWidget, isOpen } = useManageW3iWidget();
   const { address, isConnected, connector } = useAccount({
     onDisconnect: () => {
       changeView("default");
@@ -49,12 +51,17 @@ const Home: NextPage = () => {
   const [currentAddress, setCurrentAddress] = useState<`0x${string}`>();
   const { signMessageAsync } = useSignMessage();
   const { handleSendNotification, isSending } = useSendNotification();
-  const isSubscribed = useIsSubscribed();
+  const isInitialized = useInitWeb3InboxClient({
+    projectId,
+  });
+
+  console.log({ isInitialized });
+  // const isSubscribed = useIsSubscribed();
   const [iconUrl, setIconUrl] = useState("");
   const { close, open } = useWeb3Modal();
   const { colorMode } = useColorMode();
   const ref = useRef(null);
-  console.log({ isOpen });
+  // console.log({ isOpen });
   useEffect(() => {
     if (!address) return;
     setCurrentAddress(address);
@@ -123,11 +130,11 @@ const Home: NextPage = () => {
     }
   }, [handleSendNotification, currentAddress]);
 
-  useEffect(() => {
-    if (isSubscribed) {
-      handleIsSubscribed();
-    }
-  }, [isSubscribed, handleIsSubscribed]);
+  // useEffect(() => {
+  //   if (isSubscribed) {
+  //     handleIsSubscribed();
+  //   }
+  // }, [isSubscribed, handleIsSubscribed]);
 
   useEffect(() => {
     if (currentAddress && isConnected) {
@@ -138,7 +145,7 @@ const Home: NextPage = () => {
   }, [currentAddress, changeView, close, isConnected]);
 
   return (
-    <W3iContext>
+    <>
       <Flex width={"100vw"}>
         <Flex
           position="fixed"
@@ -154,39 +161,44 @@ const Home: NextPage = () => {
               zIndex: 99999999,
             }}
           >
-            <W3iButton theme={colorMode} />
             <AnimatePresence initial={false}>
-              {isOpen && (
-                <Box
-                  ref={ref}
-                  as={motion.div}
-                  position="fixed"
-                  top="5em"
-                  left={{
-                    base: "10px",
-                    sm: isConnected ? "30%" : "37%",
-                    md: isConnected ? "50%" : "57%",
-                    lg: isConnected ? "65%" : "65%",
-                    xl: isConnected ? "70%" : "75%",
-                  }}
-                  zIndex={99999}
-                  animation={animation}
-                >
+              <Box
+                ref={ref}
+                as={motion.div}
+                position="fixed"
+                top="5em"
+                left={{
+                  base: "10px",
+                  sm: isConnected ? "30%" : "37%",
+                  md: isConnected ? "50%" : "57%",
+                  lg: isConnected ? "65%" : "65%",
+                  xl: isConnected ? "70%" : "75%",
+                }}
+                zIndex={99999}
+                animation={animation}
+              >
+                {currentAddress && (
                   <W3iWidget
-                    onMessage={console.log}
-                    onSubscriptionSettled={console.log}
-                    web3inboxUrl="https://web3inbox-dev-hidden-git-chore-notif-refa-effa6b-walletconnect1.vercel.app"
                     account={currentAddress}
-                    signMessage={signMessage}
-                    dappIcon={iconUrl}
-                    connect={connect}
-                    dappName={"GM Hackers"}
-                    dappNotificationsDescription={"Subscribe to get GMs!"}
-                    settingsEnabled={false}
-                    chatEnabled={false}
+                    onConnect={connect}
+                    onSign={signMessage}
+                    domain="dev.gm.walletconnect.com"
                   />
-                </Box>
-              )}
+                )}
+                {/* <W3iWidget
+                  onMessage={console.log}
+                  onSubscriptionSettled={console.log}
+                  web3inboxUrl="https://web3inbox-dev-hidden-git-chore-notif-refa-effa6b-walletconnect1.vercel.app"
+                  account={currentAddress}
+                  signMessage={signMessage}
+                  dappIcon={iconUrl}
+                  connect={connect}
+                  dappName={"GM Hackers"}
+                  dappNotificationsDescription={"Subscribe to get GMs!"}
+                  settingsEnabled={false}
+                  chatEnabled={false}
+                /> */}
+              </Box>
             </AnimatePresence>
           </div>
 
@@ -207,7 +219,7 @@ const Home: NextPage = () => {
       >
         {view === "default" ? <DefaultView /> : <SignedInView />}
       </Flex>
-    </W3iContext>
+    </>
   );
 };
 

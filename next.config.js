@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   swcMinify: true,
+  // transpilePackages: ["@web3inbox/widget-react"],
+  // experimental: {
+  //   esmExternals: "loose",
+  // },
   async headers() {
     return [
       {
