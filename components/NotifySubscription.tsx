@@ -33,7 +33,7 @@ const NotifySubscription = () => {
           handleSendNotification({
             title: "gm hackers!",
             body: NOTIFICATION_BODY,
-            icon: `${window.location.origin}/gm.png`,
+            icon: `${window.location.origin}/eth-global.png`,
             url: "https://dev.gm.walletconnect.com/",
             type: "gm_hourly",
           })

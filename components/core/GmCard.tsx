@@ -1,13 +1,13 @@
 import { Flex } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
-import useThemeColor from "../../styles/useThemeColors";
+import useThemeColors from "../../styles/useThemeColors";
 
 interface IGmCardProps {
   children: ReactNode;
 }
 
 function GmCard({ children }: IGmCardProps) {
-  const { borderColor, cardBgColor } = useThemeColor();
+  const { borderColor, cardBgColor } = useThemeColors();
 
   return (
     <Flex

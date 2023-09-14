@@ -1,4 +1,12 @@
-import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Link as ChakraLink,
+  Text,
+  useColorModeValue,
+  HStack,
+} from "@chakra-ui/react";
+import Link from "next/link";
 import React from "react";
 import ThemeSwitcher from "./ThemeSwitcher";
 import WalletConnectIcon from "../icons/WalletConnectIcon";
@@ -16,10 +24,18 @@ function Footer() {
       pb="32px"
       gap="4px"
     >
-      <WalletConnectIcon />
-      <Text fontSize="14px" fontWeight="500" color={fontColor}>
-        WalletConnect
-      </Text>
+      <ChakraLink
+        isExternal
+        href="https://walletconnect.com"
+        display={"flex"}
+        alignItems={"center"}
+        _hover={{ textDecoration: "none" }}
+      >
+        <WalletConnectIcon />
+        <Text fontSize="14px" fontWeight="500" color={fontColor}>
+          WalletConnect
+        </Text>
+      </ChakraLink>
 
       <Box
         justifyContent="flex-end"

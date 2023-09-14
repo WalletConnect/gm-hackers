@@ -10,39 +10,32 @@ import {
 } from "@chakra-ui/react";
 import { useWeb3Modal } from "@web3modal/react";
 import GmCard from "../components/core/GmCard";
-import useThemeColor from "../styles/useThemeColors";
+import useThemeColors from "../styles/useThemeColors";
 
 const DefaultView = () => {
   const { colorMode } = useColorMode();
   const { open } = useWeb3Modal();
   const { dividerColor, infoTextColor, strongTextColor, cardFooterBgColor } =
-    useThemeColor();
+    useThemeColors();
 
   return (
     <Box w="360px">
       <Box position={{ position: "relative" }}>
         <Flex
-          style={{ position: "relative", top: "40px" }}
+          style={{ position: "relative", top: "50px" }}
           justifyContent="center"
         >
           <Image
-            style={{ width: "80px", height: "80px" }}
+            style={{ width: "100px", height: "100px" }}
             rounded="full"
-            src="/gm.png"
+            src="/eth-global.png"
             alt="gm"
           />
         </Flex>
       </Box>
       <GmCard>
         <Box pt="40px" w="full">
-          <Heading
-            py="16px"
-            h="63px"
-            fontSize="16px"
-            fontWeight="700"
-            lineHeight="21px"
-            textAlign="center"
-          >
+          <Heading py="16px" size="lg" textAlign="center">
             GM Hackers
           </Heading>
         </Box>
