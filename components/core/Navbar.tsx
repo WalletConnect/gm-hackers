@@ -1,7 +1,7 @@
 import { BellIcon } from "@chakra-ui/icons";
 import { Flex, IconButton } from "@chakra-ui/react";
 import { useManageView, useW3iAccount } from "@web3inbox/widget-react";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback } from "react";
 import { NavLink } from "./NavLink";
 
 function Navbar() {
@@ -13,15 +13,15 @@ function Navbar() {
   }, [isOpen, closeW3I, openW3I]);
 
   return (
-    <Flex width={"100vw"}>
-      <Flex gap={4} alignItems="center">
-        <NavLink href="/">Simple</NavLink>
-        <NavLink href="/advanced">Advanced</NavLink>
+    <Flex width={"100vw"} gap={4} alignItems="center">
+      <Flex ml={4} gap={4} alignItems="center">
+        <NavLink href="/">Custom</NavLink>
+        <NavLink href="/widget">Widget</NavLink>
       </Flex>
       <Flex
         position="fixed"
-        top={"36px"}
-        right={"36px"}
+        top={"50px"}
+        right={"50px"}
         alignItems="center"
         gap="16px"
       >
