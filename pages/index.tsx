@@ -9,21 +9,12 @@ import {
 } from "@web3inbox/widget-react";
 import "@web3inbox/widget-react/dist/compiled.css";
 
-import { useWeb3Modal } from "@web3modal/react";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useAccount, useSignMessage } from "wagmi";
-import dynamic from "next/dynamic";
-import { useOnClickOutside } from "usehooks-ts";
 
 import DefaultView from "../views/DefaultView";
 import SignedInView from "../views/SignedInView";
 import { BellIcon } from "@chakra-ui/icons";
-
-const Web3ModalButton = dynamic(
-  () => import("@web3modal/react").then((w3m) => w3m.Web3Button),
-  {
-    ssr: false,
-  }
-);
 
 const Home: NextPage = () => {
   const [view, changeView] = useState<"default" | "qr" | "signedIn">("default");
@@ -140,13 +131,7 @@ const Home: NextPage = () => {
             )}
           </Box>
 
-          {isConnected && (
-            <Web3ModalButton
-              icon="show"
-              label="Connect Wallet"
-              balance="show"
-            />
-          )}
+          {isConnected && <w3m-button label="Connect Wallet" balance="show" />}
         </Flex>
       </Flex>
     </>

@@ -1,17 +1,14 @@
 import type { AppProps } from "next/app";
 import { ChakraProvider, Box, Flex, Grid, GridItem } from "@chakra-ui/react";
-import {
-  EthereumClient,
-  w3mConnectors,
-  w3mProvider,
-} from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { theme } from "../styles/theme";
 import Footer from "../components/core/Footer";
 import { useInitWeb3InboxClient } from "@web3inbox/widget-react";
 import "@web3inbox/widget-react/dist/compiled.css";
+
+import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
 
 // 1. Get projectID at https://cloud.walletconnect.com
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
@@ -19,16 +16,14 @@ if (!projectId) {
   throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
 }
 
-// 2. Configure web3Modal
+// 2. Configure Web3Modal
 const chains = [mainnet];
-
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
-  publicClient,
+const wagmiConfig = defaultWagmiConfig({
+  chains,
+  projectId,
+  appName: "GM Hackers",
 });
-const ethereumClient = new EthereumClient(wagmiConfig, chains);
+createWeb3Modal({ wagmiConfig, projectId, chains });
 
 function MyApp({ Component, pageProps }: AppProps) {
   const initialized = useInitWeb3InboxClient({
@@ -71,7 +66,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Box>
         </ChakraProvider>
       </WagmiConfig>
-      <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
     </>
   );
 }

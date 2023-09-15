@@ -8,7 +8,7 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import { useWeb3Modal } from "@web3modal/react";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import GmCard from "../components/core/GmCard";
 import useThemeColors from "../styles/useThemeColors";
 
@@ -45,7 +45,7 @@ const DefaultView = () => {
           <Button
             paddingY="1.25em"
             fontSize={"16px"}
-            onClick={open}
+            onClick={() => open()}
             borderRadius={"10px"}
             border="solid 1px rgba(6, 43, 43, 0.10)"
             bg="brand.400"
