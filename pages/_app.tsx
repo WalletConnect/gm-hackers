@@ -23,6 +23,7 @@ const wagmiConfig = defaultWagmiConfig({
   projectId,
   appName: "GM Hackers",
 });
+
 createWeb3Modal({ wagmiConfig, projectId, chains });
 
 function MyApp({ Component, pageProps }: AppProps) {

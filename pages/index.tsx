@@ -2,6 +2,7 @@
 import type { NextPage } from "next";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Box, Flex, IconButton } from "@chakra-ui/react";
+import { useInterval } from "usehooks-ts";
 import {
   useManageView,
   useW3iAccount,
@@ -15,6 +16,7 @@ import { useAccount, useSignMessage } from "wagmi";
 import DefaultView from "../views/DefaultView";
 import SignedInView from "../views/SignedInView";
 import { BellIcon } from "@chakra-ui/icons";
+import dynamic from "next/dynamic";
 
 const Home: NextPage = () => {
   const [view, changeView] = useState<"default" | "qr" | "signedIn">("default");
@@ -131,7 +133,7 @@ const Home: NextPage = () => {
             )}
           </Box>
 
-          {isConnected && <w3m-button label="Connect Wallet" balance="show" />}
+          <w3m-button label="Connect Wallet" balance="show" />
         </Flex>
       </Flex>
     </>

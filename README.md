@@ -23,7 +23,7 @@ cp .env.local.example .env.local
    3. Enable Notify API by following the steps outlined in the API tab.
    4. Copy the `notify_subscribe_topic_private_key` generated in WalletConnect Cloud and set it as the value of `NOTIFY_PROJECT_SECRET` in your `.env.local`
 
-TODO 4. How to send notifications 5. Mention broadcast
+TODO 4. How to send notifications 5. Mention broadcast 6. Enable developer mode on settings
 
 ## Running locally
 

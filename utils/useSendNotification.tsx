@@ -43,7 +43,7 @@ function useSendNotification() {
           variant: "subtle",
           title:
             message ?? success
-              ? `Message sent`
+              ? `New block notification`
               : "Message failed. Did you set up a subscription via the widget first?",
         });
       } catch (error: any) {
