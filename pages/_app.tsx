@@ -9,6 +9,7 @@ import { useInitWeb3InboxClient } from "@web3inbox/widget-react";
 import "@web3inbox/widget-react/dist/compiled.css";
 
 import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
+import Navbar from "../components/core/Navbar";
 
 // 1. Get projectID at https://cloud.walletconnect.com
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
@@ -27,12 +28,6 @@ const wagmiConfig = defaultWagmiConfig({
 createWeb3Modal({ wagmiConfig, projectId, chains });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const initialized = useInitWeb3InboxClient({
-    projectId,
-    domain: "dev.gm.walletconnect.com",
-  });
-  console.log({ initialized });
-
   return (
     <>
       <WagmiConfig config={wagmiConfig}>
@@ -56,6 +51,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   gap="5"
                   fontSize={"1.25em"}
                 />
+                <Navbar />
               </GridItem>
               <Flex justifyContent="center">
                 <GridItem area={"main"} justifyContent="center">

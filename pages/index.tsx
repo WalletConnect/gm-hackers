@@ -1,13 +1,7 @@
 "use client";
 import type { NextPage } from "next";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, Flex, IconButton } from "@chakra-ui/react";
-import { useInterval } from "usehooks-ts";
-import {
-  useManageView,
-  useW3iAccount,
-  W3iWidget,
-} from "@web3inbox/widget-react";
+import { Box, Flex } from "@chakra-ui/react";
 import "@web3inbox/widget-react/dist/compiled.css";
 
 import { useWeb3Modal } from "@web3modal/wagmi/react";
@@ -15,8 +9,14 @@ import { useAccount, useSignMessage } from "wagmi";
 
 import DefaultView from "../views/DefaultView";
 import SignedInView from "../views/SignedInView";
-import { BellIcon } from "@chakra-ui/icons";
 import dynamic from "next/dynamic";
+
+const W3iWidget = dynamic(
+  () => import("@web3inbox/widget-react").then((w3i) => w3i.W3iWidget),
+  { ssr: false }
+);
+
+const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
 const Home: NextPage = () => {
   const [view, changeView] = useState<"default" | "qr" | "signedIn">("default");
@@ -39,9 +39,7 @@ const Home: NextPage = () => {
   );
 
   const ref = useRef(null);
-  const { account, setAccount, register } = useW3iAccount();
   const [currentAddress, setCurrentAddress] = useState<`0x${string}`>();
-  const { isOpen, open: openW3I, close: closeW3I } = useManageView();
   const { close, open } = useWeb3Modal();
 
   const connect = useCallback(async () => {
@@ -56,29 +54,11 @@ const Home: NextPage = () => {
     }
   }, [connector, open]);
 
-  const handleRegister = useCallback(async () => {
-    if (!account) {
-      try {
-        register(signMessage);
-      } catch (error) {
-        console.log({ registerError: error });
-      }
-    }
-  }, [register, account, signMessage]);
-
-  const toggleWeb3Inbox = useCallback(() => {
-    isOpen ? closeW3I() : openW3I();
-  }, [isOpen, closeW3I, openW3I]);
-
   useEffect(() => {
     if (!address) return;
     setCurrentAddress(address);
-    setAccount(`eip155:1:${address}`);
-  }, [address, setAccount, register, signMessage]);
-
-  useEffect(() => {
-    handleRegister();
-  }, [handleRegister]);
+    // setAccount(`eip155:1:${address}`);
+  }, [signMessage, address]);
 
   useEffect(() => {
     if (currentAddress && isConnected) {
@@ -97,45 +77,26 @@ const Home: NextPage = () => {
       >
         {view === "default" ? <DefaultView /> : <SignedInView />}
       </Flex>
-      <Flex width={"100vw"}>
-        <Flex
-          position="fixed"
-          top={"36px"}
-          right={"36px"}
-          alignItems="center"
-          gap="16px"
-        >
-          {account && (
-            <IconButton
-              variant="outline"
-              aria-label="toggle Web3Inbox Widget"
-              rounded="full"
-              icon={<BellIcon />}
-              onClick={toggleWeb3Inbox}
-            />
-          )}
-          <Box
-            ref={ref}
-            maxH="600px"
-            maxW="400px"
-            rounded="2xl"
-            position="fixed"
-            top={20}
-            right={20}
-          >
-            {currentAddress && (
-              <W3iWidget
-                account={currentAddress}
-                onConnect={connect}
-                onSign={signMessage}
-                domain="dev.gm.walletconnect.com"
-              />
-            )}
-          </Box>
 
-          <w3m-button label="Connect Wallet" balance="show" />
-        </Flex>
-      </Flex>
+      <Box
+        ref={ref}
+        maxH="600px"
+        maxW="400px"
+        rounded="2xl"
+        position="fixed"
+        top={20}
+        right={20}
+      >
+        {currentAddress && (
+          <W3iWidget
+            projectId={projectId}
+            account={currentAddress}
+            onConnect={connect}
+            onSign={signMessage}
+            domain="dev.gm.walletconnect.com"
+          />
+        )}
+      </Box>
     </>
   );
 };

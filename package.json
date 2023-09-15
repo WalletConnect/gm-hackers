@@ -13,7 +13,8 @@
     "@chakra-ui/react": "^2.5.4",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@web3inbox/widget-react": "^0.6.3",
+    "@web3inbox/core": "^0.0.6",
+    "@web3inbox/widget-react": "^0.6.6",
     "@web3modal/ethereum": "^2.7.1",
     "@web3modal/react": "^2.7.1",
     "@web3modal/wagmi": "^3.0.0-beta.1",
@@ -24,6 +25,7 @@
     "next": "^13.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.46.1",
     "react-icons": "^4.10.1",
     "smart-truncate": "^1.0.1",
     "usehooks-ts": "^2.9.1",
@@ -43,7 +45,7 @@
   },
   "overrides": {
     "@web3inbox/core": {
-      "@walletconnect/notify-client": "0.12.0-1ed9efc"
+      "@walletconnect/notify-client": "0.12.0-434f609"
     }
   }
 }
