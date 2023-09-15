@@ -1,7 +1,7 @@
 "use client";
 import type { NextPage } from "next";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, IconButton } from "@chakra-ui/react";
 import {
   useManageView,
   useW3iAccount,
@@ -16,6 +16,7 @@ import { useOnClickOutside } from "usehooks-ts";
 
 import DefaultView from "../views/DefaultView";
 import SignedInView from "../views/SignedInView";
+import { BellIcon } from "@chakra-ui/icons";
 
 const Web3ModalButton = dynamic(
   () => import("@web3modal/react").then((w3m) => w3m.Web3Button),
@@ -47,22 +48,8 @@ const Home: NextPage = () => {
   const ref = useRef(null);
   const { account, setAccount, register } = useW3iAccount();
   const [currentAddress, setCurrentAddress] = useState<`0x${string}`>();
-  const { close: closeW3I } = useManageView();
+  const { isOpen, open: openW3I, close: closeW3I } = useManageView();
   const { close, open } = useWeb3Modal();
-
-  useOnClickOutside(ref, closeW3I);
-
-  useEffect(() => {
-    if (!address) return;
-    setCurrentAddress(address);
-    setAccount(`eip155:1:${address}`);
-  }, [address, setAccount, register, signMessage]);
-
-  useEffect(() => {
-    if (!account) {
-      register(signMessage);
-    }
-  }, [register, signMessage, account]);
 
   const connect = useCallback(async () => {
     if (!connector) return open();
@@ -75,6 +62,30 @@ const Home: NextPage = () => {
       console.log({ error });
     }
   }, [connector, open]);
+
+  const handleRegister = useCallback(async () => {
+    if (!account) {
+      try {
+        register(signMessage);
+      } catch (error) {
+        console.log({ registerError: error });
+      }
+    }
+  }, [register, account, signMessage]);
+
+  const toggleWeb3Inbox = useCallback(() => {
+    isOpen ? closeW3I() : openW3I();
+  }, [isOpen, closeW3I, openW3I]);
+
+  useEffect(() => {
+    if (!address) return;
+    setCurrentAddress(address);
+    setAccount(`eip155:1:${address}`);
+  }, [address, setAccount, register, signMessage]);
+
+  useEffect(() => {
+    handleRegister();
+  }, [handleRegister]);
 
   useEffect(() => {
     if (currentAddress && isConnected) {
@@ -101,6 +112,15 @@ const Home: NextPage = () => {
           alignItems="center"
           gap="16px"
         >
+          {account && (
+            <IconButton
+              variant="outline"
+              aria-label="toggle Web3Inbox Widget"
+              rounded="full"
+              icon={<BellIcon />}
+              onClick={toggleWeb3Inbox}
+            />
+          )}
           <Box
             ref={ref}
             maxH="600px"
