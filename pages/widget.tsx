@@ -90,10 +90,10 @@ const Widget: NextPage = () => {
         {currentAddress && (
           <W3iWidget
             projectId={projectId}
-            account={currentAddress}
+            account={`eip155:1:${currentAddress}`}
             onConnect={connect}
             onSign={signMessage}
-            domain="dev.gm.walletconnect.com"
+            domain="hackers.gm.walletconnect.com"
           />
         )}
       </Box>

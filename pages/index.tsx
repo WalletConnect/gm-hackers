@@ -45,11 +45,15 @@ const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 const Home: NextPage = () => {
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId,
-    domain: "dev.gm.walletconnect.com",
+    domain: "gm.walletconnect.com",
   });
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
-  const { account, setAccount, register: registerIdentity } = useW3iAccount();
+  const {
+    account = "",
+    setAccount,
+    register: registerIdentity,
+  } = useW3iAccount();
   const { subscribe, isSubscribed, unsubscribe } = useManageSubscription({
     account,
   });
