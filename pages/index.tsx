@@ -151,7 +151,12 @@ const Home: NextPage = () => {
             </Button>
           </Flex>
         ) : (
-          <Button leftIcon={<FaBell />} onClick={subscribe} colorScheme="cyan">
+          <Button
+            leftIcon={<FaBell />}
+            onClick={subscribe}
+            colorScheme="cyan"
+            variant="outline"
+          >
             Subscribe
           </Button>
         )}
