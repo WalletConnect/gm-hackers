@@ -51,7 +51,7 @@ const body = JSON.stringify({
     body: "Enjoy hacking on WalletConnect",
     icon: "https://avatars.githubusercontent.com/u/37784886?s=48&v=4",
     url: "https://hackers.gm.walletconnect.com/",
-    type: "promotional",
+    type: "gm_hacker",
   },
 });
 

@@ -21,7 +21,7 @@ export const NavLink = (props: Props) => {
     <Button
       variant="outline"
       as={Link}
-      px={2}
+      px={4}
       py={1}
       rounded={"full"}
       _hover={{

@@ -68,7 +68,6 @@ const Home: NextPage = () => {
   const { subscription } = useSubscription({ account });
   const { messages, deleteMessage } = useMessages({ account });
   const { scopes, updateScopes } = useSubscriptionScopes({ account });
-  console.log({ scopes });
   const { handleSendNotification } = useSendNotification();
   const wagmiPublicClient = usePublicClient();
   const toast = useToast();
@@ -132,14 +131,12 @@ const Home: NextPage = () => {
     Object.entries(scopes).forEach(([scopeKey, scope]) => {
       const s: any = scope;
       if (s.enabled) {
-        console.log({ isEnabled: s.enabled });
         setValue(scopeKey, s.enabled);
       }
     });
   }, [scopes, setValue]);
 
   const handleBlockNotification = useCallback(async () => {
-    console.log({ newBlock: true });
     if (isSubscribed) {
       const blockNumber = await wagmiPublicClient.getBlockNumber();
       if (lastBlock !== blockNumber.toString()) {
@@ -155,18 +152,18 @@ const Home: NextPage = () => {
     }
   }, [wagmiPublicClient, handleSendNotification, isSubscribed, lastBlock]);
 
-  useInterval(() => {
-    handleBlockNotification();
-  }, 12000);
+  // useInterval(() => {
+  //   handleBlockNotification();
+  // }, 12000);
 
   return (
-    <Flex w="xl" flexDirection={"column"} p={10}>
-      <Heading alignSelf={"center"} mb={4}>
-        Web3Inbox hooks
+    <Flex w="full" flexDirection={"column"} pt={10} maxW="700px">
+      <Heading alignSelf={"center"} textAlign={"center"} mb={10}>
+        WalletConnect Web3Inbox hooks
       </Heading>
       <Flex flexDirection="column">
         {isSubscribed ? (
-          <Flex flexDirection={"column"} gap={2}>
+          <Flex flexDirection={"column"} alignItems="center" gap={4}>
             <Button
               leftIcon={<FaBellSlash />}
               variant="outline"
@@ -203,6 +200,8 @@ const Home: NextPage = () => {
               colorScheme="cyan"
               rounded="full"
               variant="outline"
+              w="fit-content"
+              alignSelf="center"
               isDisabled={!Boolean(account)}
             >
               Subscribe
@@ -222,8 +221,21 @@ const Home: NextPage = () => {
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                <Code lang="json" maxW="500px" overflow="scroll">
-                  {JSON.stringify(subscription)}
+                <Code
+                  lang="json"
+                  maxW={{
+                    base: "280px",
+                    sm: "lg",
+                    md: "full",
+                  }}
+                >
+                  <pre
+                    style={{
+                      overflow: "scroll",
+                    }}
+                  >
+                    {JSON.stringify(subscription, undefined, 2)}
+                  </pre>
                 </Code>
               </AccordionPanel>
             </AccordionItem>
@@ -323,6 +335,7 @@ const Home: NextPage = () => {
                     variant="outline"
                     colorScheme="blue"
                     type="submit"
+                    rounded="full"
                   >
                     Save preferences
                   </Button>

@@ -1,6 +1,5 @@
 import type { AppProps } from "next/app";
 import { ChakraProvider, Box, Flex, Grid, GridItem } from "@chakra-ui/react";
-import { Web3Modal } from "@web3modal/react";
 import { WagmiConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { theme } from "../styles/theme";
@@ -29,11 +28,12 @@ createWeb3Modal({ wagmiConfig, projectId, chains });
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <WagmiConfig config={wagmiConfig}>
-        <ChakraProvider theme={theme}>
+      <ChakraProvider theme={theme}>
+        <WagmiConfig config={wagmiConfig}>
           <Grid
             templateAreas={`"header" "main" "footer"`}
-            style={{ height: "100%", width: "100%" }}
+            w="100%"
+            width="100%"
             gridTemplateRows={"100px 3f 40px"}
             gridTemplateColumns={"1fr"}
             paddingY="2em"
@@ -54,8 +54,8 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Footer />
             </GridItem>
           </Grid>
-        </ChakraProvider>
-      </WagmiConfig>
+        </WagmiConfig>
+      </ChakraProvider>
     </>
   );
 }
