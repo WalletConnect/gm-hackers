@@ -1,6 +1,6 @@
 "use client";
 import type { NextPage } from "next";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Accordion,
@@ -44,6 +44,7 @@ import { BsSendFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import useSendNotification from "../utils/useSendNotification";
 import Link from "next/link";
+import { useInterval } from "usehooks-ts";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
@@ -67,9 +68,11 @@ const Home: NextPage = () => {
   const { subscription } = useSubscription({ account });
   const { messages, deleteMessage } = useMessages({ account });
   const { scopes, updateScopes } = useSubscriptionScopes({ account });
+  console.log({ scopes });
   const { handleSendNotification } = useSendNotification();
   const wagmiPublicClient = usePublicClient();
   const toast = useToast();
+  const [lastBlock, setLastBlock] = useState<string>();
 
   const { register, setValue, handleSubmit } = useForm();
 
@@ -136,21 +139,25 @@ const Home: NextPage = () => {
   }, [scopes, setValue]);
 
   const handleBlockNotification = useCallback(async () => {
+    console.log({ newBlock: true });
     if (isSubscribed) {
       const blockNumber = await wagmiPublicClient.getBlockNumber();
-      handleSendNotification({
-        title: "New block",
-        body: blockNumber.toString(),
-        icon: `${window.location.origin}/eth-global.png`,
-        url: "https://hackers.gm.walletconnect.com/",
-        type: "gm_hacker",
-      });
+      if (lastBlock !== blockNumber.toString()) {
+        setLastBlock(blockNumber.toString());
+        return handleSendNotification({
+          title: "New block",
+          body: blockNumber.toString(),
+          icon: `${window.location.origin}/eth-global.png`,
+          url: `https://etherscan.io/block/${blockNumber.toString()}`,
+          type: "gm_hacker",
+        });
+      }
     }
-  }, [wagmiPublicClient, handleSendNotification, isSubscribed]);
+  }, [wagmiPublicClient, handleSendNotification, isSubscribed, lastBlock]);
 
-  useEffect(() => {
+  useInterval(() => {
     handleBlockNotification();
-  }, [handleBlockNotification]);
+  }, 12000);
 
   return (
     <Flex w="xl" flexDirection={"column"} p={10}>
@@ -164,7 +171,7 @@ const Home: NextPage = () => {
               leftIcon={<FaBellSlash />}
               variant="outline"
               onClick={unsubscribe}
-              disabled={isW3iInitialized}
+              isDisabled={!isW3iInitialized}
               colorScheme="red"
               rounded="full"
             >
@@ -174,7 +181,7 @@ const Home: NextPage = () => {
               leftIcon={<BsSendFill />}
               variant="outline"
               onClick={handleTestNotification}
-              disabled={isW3iInitialized}
+              isDisabled={!isW3iInitialized}
               colorScheme="blue"
               rounded="full"
             >
@@ -204,7 +211,7 @@ const Home: NextPage = () => {
         )}
 
         {isSubscribed && (
-          <Accordion defaultIndex={[1]} mt={10}>
+          <Accordion defaultIndex={[1]} allowToggle mt={10}>
             <AccordionItem>
               <h2>
                 <AccordionButton>
