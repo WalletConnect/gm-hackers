@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const projectId = process.env.NEXT_PUBLIC_DEV_PROJECT_ID;
+const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 if (!projectId) {
   throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
 }

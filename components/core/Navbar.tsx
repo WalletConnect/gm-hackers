@@ -13,18 +13,19 @@ function Navbar() {
   }, [isOpen, closeW3I, openW3I]);
 
   return (
-    <Flex width={"100vw"} gap={4} alignItems="center">
+    <Flex
+      position="fixed"
+      gap={4}
+      alignItems="center"
+      justifyContent={"space-between"}
+      w="full"
+      pr={12}
+    >
       <Flex ml={4} gap={4} alignItems="center">
         <NavLink href="/">Custom</NavLink>
         <NavLink href="/widget">Widget</NavLink>
       </Flex>
-      <Flex
-        position="fixed"
-        top={"50px"}
-        right={"50px"}
-        alignItems="center"
-        gap="16px"
-      >
+      <Flex alignItems="center" gap="16px">
         {account && (
           <IconButton
             variant="outline"

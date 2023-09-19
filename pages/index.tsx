@@ -12,15 +12,19 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
+  Box,
   Button,
   CloseButton,
   Code,
   Flex,
   FormControl,
   FormLabel,
+  HStack,
   Heading,
+  Image,
   Switch,
   Text,
+  Tooltip,
   VStack,
   useToast,
 } from "@chakra-ui/react";
@@ -34,20 +38,24 @@ import {
 } from "@web3inbox/widget-react";
 import "@web3inbox/widget-react/dist/compiled.css";
 
-import { useAccount, useSignMessage } from "wagmi";
+import { useAccount, usePublicClient, useSignMessage } from "wagmi";
 import { FaBell, FaBellSlash } from "react-icons/fa";
 import { BsSendFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import useSendNotification from "../utils/useSendNotification";
+import { useInterval } from "usehooks-ts";
+import Link from "next/link";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
 const Home: NextPage = () => {
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId,
-    domain: "gm.walletconnect.com",
+    domain: "hackers.gm.walletconnect.com",
   });
-  const { address } = useAccount();
+  const { address } = useAccount({
+    onDisconnect: () => window.location.reload(),
+  });
   const { signMessageAsync } = useSignMessage();
   const {
     account = "",
@@ -61,6 +69,7 @@ const Home: NextPage = () => {
   const { messages, deleteMessage } = useMessages({ account });
   const { scopes, updateScopes } = useSubscriptionScopes({ account });
   const { handleSendNotification } = useSendNotification();
+  const wagmiPublicClient = usePublicClient();
   const toast = useToast();
 
   const { register, setValue, handleSubmit } = useForm();
@@ -98,7 +107,7 @@ const Home: NextPage = () => {
         title: "GM Hacker",
         body: "Hack it until you make it!",
         icon: `${window.location.origin}/eth-global.png`,
-        url: "https://dev.gm.walletconnect.com/",
+        url: "https://hackers.gm.walletconnect.com/",
         type: "gm_hourly",
       });
     }
@@ -127,6 +136,23 @@ const Home: NextPage = () => {
     });
   }, [scopes, setValue]);
 
+  const handleBlockNotification = useCallback(async () => {
+    if (isSubscribed) {
+      const blockNumber = await wagmiPublicClient.getBlockNumber();
+      handleSendNotification({
+        title: "New block",
+        body: blockNumber.toString(),
+        icon: `${window.location.origin}/eth-global.png`,
+        url: "https://hackers.gm.walletconnect.com/",
+        type: "gm_hourly",
+      });
+    }
+  }, [wagmiPublicClient, handleSendNotification, isSubscribed]);
+
+  useInterval(() => {
+    handleBlockNotification();
+  }, 12000);
+
   return (
     <Flex w="xl" flexDirection={"column"} p={10}>
       <Heading alignSelf={"center"} mb={4}>
@@ -141,6 +167,7 @@ const Home: NextPage = () => {
               onClick={unsubscribe}
               disabled={isW3iInitialized}
               colorScheme="red"
+              rounded="full"
             >
               Unsubscribe
             </Button>
@@ -150,23 +177,33 @@ const Home: NextPage = () => {
               onClick={handleTestNotification}
               disabled={isW3iInitialized}
               colorScheme="blue"
+              rounded="full"
             >
               Send test notification
             </Button>
           </Flex>
         ) : (
-          <Button
-            leftIcon={<FaBell />}
-            onClick={subscribe}
-            colorScheme="cyan"
-            variant="outline"
+          <Tooltip
+            label="Connect your wallet first"
+            hasArrow
+            rounded="lg"
+            hidden={Boolean(address) && Boolean(account)}
           >
-            Subscribe
-          </Button>
+            <Button
+              leftIcon={<FaBell />}
+              onClick={subscribe}
+              colorScheme="cyan"
+              rounded="full"
+              variant="outline"
+              isDisabled={!address || !account}
+            >
+              Subscribe
+            </Button>
+          </Tooltip>
         )}
 
         {isSubscribed && (
-          <Accordion defaultIndex={[1]} allowMultiple mt={10}>
+          <Accordion defaultIndex={[1]} mt={10}>
             <AccordionItem>
               <h2>
                 <AccordionButton>
@@ -177,7 +214,7 @@ const Home: NextPage = () => {
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                <Code lang="json" maxW="500px">
+                <Code lang="json" maxW="500px" overflow="scroll">
                   {JSON.stringify(subscription)}
                 </Code>
               </AccordionPanel>
@@ -190,35 +227,60 @@ const Home: NextPage = () => {
                 </Heading>
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel
-                display="flex"
-                flexDirection={"column"}
-                pb={4}
-                gap={2}
-              >
-                {!messages?.length ? (
-                  <Text>No messages yet.</Text>
-                ) : (
-                  messages
-                    .sort((a, b) => b.id - a.id)
-                    .map(({ id, message }) => (
-                      <Alert key={id} status="info" rounded="full">
-                        <AlertIcon />
-                        <AlertTitle>{message.title}</AlertTitle>
-                        <AlertDescription flexGrow={1}>
-                          {message.body}
-                        </AlertDescription>
-                        <CloseButton
-                          alignSelf="flex-start"
-                          position="relative"
-                          right={-1}
-                          top={-1}
-                          onClick={async () => deleteMessage(id)}
-                        />
-                      </Alert>
-                    ))
-                )}
-              </AccordionPanel>
+              <Box overflowY="scroll" position={"relative"} maxH="400px">
+                <AccordionPanel
+                  display="flex"
+                  flexDirection={"column"}
+                  pb={4}
+                  gap={2}
+                  position={"relative"}
+                >
+                  {!messages?.length ? (
+                    <Text>No messages yet.</Text>
+                  ) : (
+                    messages
+                      .sort((a, b) => b.id - a.id)
+                      .map(({ id, message }) => (
+                        <Alert
+                          as={Link}
+                          href={message.url}
+                          target="_blank"
+                          key={id}
+                          status="info"
+                          rounded="xl"
+                        >
+                          <AlertIcon />
+
+                          <Flex flexDir={"column"}>
+                            <AlertTitle>{message.title}</AlertTitle>
+                            <AlertDescription flexGrow={1}>
+                              {message.body}
+                            </AlertDescription>
+                          </Flex>
+                          <Box w="80px">
+                            <Image
+                              src={message.icon}
+                              alt="notification image"
+                              w="60px"
+                              height="60px"
+                              rounded="full"
+                            />
+                          </Box>
+                          <CloseButton
+                            alignSelf="flex-start"
+                            position="relative"
+                            right={-1}
+                            top={-1}
+                            onClick={async (e) => {
+                              e.preventDefault();
+                              deleteMessage(id);
+                            }}
+                          />
+                        </Alert>
+                      ))
+                  )}
+                </AccordionPanel>
+              </Box>
             </AccordionItem>
 
             <AccordionItem>

@@ -16,9 +16,9 @@ import { useInterval } from "usehooks-ts";
 
 const NotifySubscription = () => {
   const wagmiPublicClient = usePublicClient();
-  const { account: w3iAccount } = useW3iAccount();
+  const { account = "" } = useW3iAccount();
   const { isSubscribed } = useManageSubscription({
-    account: w3iAccount,
+    account,
   });
   const { open } = useManageView();
   const { handleSendNotification, isSending } = useSendNotification();
@@ -30,7 +30,7 @@ const NotifySubscription = () => {
         title: "New block",
         body: blockNumber.toString(),
         icon: `${window.location.origin}/eth-global.png`,
-        url: "https://dev.gm.walletconnect.com/",
+        url: "https://hackers.gm.walletconnect.com/",
         type: "gm_hourly",
       });
     }
@@ -55,7 +55,7 @@ const NotifySubscription = () => {
             title: "gm hackers!",
             body: NOTIFICATION_BODY,
             icon: `${window.location.origin}/eth-global.png`,
-            url: "https://dev.gm.walletconnect.com/",
+            url: "https://hackers.gm.walletconnect.com/",
             type: "gm_hourly",
           });
         }}

@@ -69,12 +69,7 @@ const Widget: NextPage = () => {
 
   return (
     <>
-      <Flex
-        width={"100%"}
-        justifyContent="center"
-        position="relative"
-        zIndex={0}
-      >
+      <Flex width={"100%"} h="full" justifyContent="center" position="relative">
         {view === "default" ? <DefaultView /> : <SignedInView />}
       </Flex>
 

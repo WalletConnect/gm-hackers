@@ -1,8 +1,5 @@
 {
   "schemaVersion": 1,
-  "name": "gm-dApp",
-  "description": "A simple gm notification dApp",
-  "icons": ["https://i.imgur.com/q9QDRXc.png"],
   "types": [
     {
       "name": "promotional",
@@ -19,10 +16,11 @@
     {
       "name": "alerts",
       "description": "Get notified when urgent action is required from your account"
-    },
-    {
-      "name": "gm_hourly",
-      "description": "Get notified every hour with a gm notification"
     }
-  ]
+  ],
+  "name": "gm-hackers",
+  "icons": [
+    "https://docs.walletconnect.com/assets/images/web3inboxLogo-b05bb667494386860888488e89856cd9.png"
+  ],
+  "description": "Get started in minutes with WalletConnect Notify."
 }

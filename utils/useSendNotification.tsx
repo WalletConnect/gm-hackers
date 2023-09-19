@@ -41,10 +41,9 @@ function useSendNotification() {
           status: success ? "success" : "error",
           position: "top",
           variant: "subtle",
-          title:
-            message ?? success
-              ? "Message sent"
-              : "Message failed. Did you set up a subscription via the widget first?",
+          title: success
+            ? notification.title
+            : "Message failed. Did you set up a subscription via the widget first?",
         });
       } catch (error: any) {
         setIsSending(false);

@@ -31,35 +31,29 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <WagmiConfig config={wagmiConfig}>
         <ChakraProvider theme={theme}>
-          <Box
-            width="100vw"
-            style={{ width: "100vw", height: "100vh" }}
-            className="bg-primary"
+          <Grid
+            templateAreas={`"header" "main" "footer"`}
+            style={{ height: "100%", width: "100%" }}
+            gridTemplateRows={"100px 3f 40px"}
+            gridTemplateColumns={"1fr"}
+            paddingY="2em"
           >
-            <Grid
-              templateAreas={`"header" "main" "footer"`}
-              style={{ height: "100%", width: "100%" }}
-              gridTemplateRows={"50px 3f 20px"}
-              gridTemplateColumns={"1fr"}
-              paddingY="2em"
-            >
-              <GridItem area={"header"} padding={4}>
-                <Flex
-                  alignItems="center"
-                  justifyContent="center"
-                  gap="5"
-                  fontSize={"1.25em"}
-                />
-                <Navbar />
-              </GridItem>
-              <Flex justifyContent="center">
-                <GridItem area={"main"} justifyContent="center">
-                  <Component {...pageProps} />
-                </GridItem>
+            <GridItem area={"header"} padding={4}>
+              <Navbar />
+            </GridItem>
+            <GridItem area={"main"} padding={10}>
+              <Flex
+                flexDirection={"column"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Component {...pageProps} />
               </Flex>
+            </GridItem>
+            <GridItem area={"footer"}>
               <Footer />
-            </Grid>
-          </Box>
+            </GridItem>
+          </Grid>
         </ChakraProvider>
       </WagmiConfig>
     </>

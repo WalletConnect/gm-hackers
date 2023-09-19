@@ -4,9 +4,7 @@ import {
   Link as ChakraLink,
   Text,
   useColorModeValue,
-  HStack,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import React from "react";
 import ThemeSwitcher from "./ThemeSwitcher";
 import WalletConnectIcon from "../icons/WalletConnectIcon";
@@ -17,6 +15,8 @@ function Footer() {
     <Flex
       as={"footer"}
       w="full"
+      position={"fixed"}
+      bottom="6"
       justifyContent={"center"}
       alignSelf="flex-end"
       alignItems={"center"}

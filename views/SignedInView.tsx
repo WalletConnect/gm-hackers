@@ -22,7 +22,7 @@ const SignedInView: React.FC = () => {
       window.location.reload();
     },
   });
-  const { account } = useW3iAccount();
+  const { account = "" } = useW3iAccount();
   const { isSubscribed } = useManageSubscription({ account });
   const { onCopy, hasCopied } = useClipboard(address ?? "");
 
