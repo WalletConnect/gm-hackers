@@ -38,7 +38,7 @@ const headers = {
 // 1. Get the list of subscribers for your project
 const subscribersRes = await fetch(
   // Replace PROJECT_ID with your projectId from WalletConnect Cloud.
-  "https://notify.walletconnect.com/PROJECT_ID/notify",
+  "https://notify.walletconnect.com/PROJECT_ID/subscribers",
   { headers }
 );
 const subscribers = await subscribersRes.json();

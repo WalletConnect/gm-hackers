@@ -1,6 +1,8 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { NavLink } from "./NavLink";
+import Link from "next/link";
+import { FaGithub } from "react-icons/fa";
 
 function Navbar() {
   return (

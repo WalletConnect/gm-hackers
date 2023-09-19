@@ -19,7 +19,6 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  HStack,
   Heading,
   Image,
   Switch,
@@ -152,9 +151,9 @@ const Home: NextPage = () => {
     }
   }, [wagmiPublicClient, handleSendNotification, isSubscribed, lastBlock]);
 
-  // useInterval(() => {
-  //   handleBlockNotification();
-  // }, 12000);
+  useInterval(() => {
+    handleBlockNotification();
+  }, 12000);
 
   return (
     <Flex w="full" flexDirection={"column"} pt={10} maxW="700px">
