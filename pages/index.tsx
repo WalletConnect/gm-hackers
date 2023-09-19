@@ -187,7 +187,7 @@ const Home: NextPage = () => {
         ) : (
           <Tooltip
             label={
-              "Connect your wallet first and register your account with the signature request"
+              "Connect your wallet first and register your account by approving the signature request."
             }
             hasArrow
             rounded="lg"
