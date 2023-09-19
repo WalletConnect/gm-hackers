@@ -108,7 +108,7 @@ const Home: NextPage = () => {
         body: "Hack it until you make it!",
         icon: `${window.location.origin}/eth-global.png`,
         url: "https://hackers.gm.walletconnect.com/",
-        type: "gm_hourly",
+        type: "gm_hacker",
       });
     }
   }, [handleSendNotification, isSubscribed]);
@@ -144,7 +144,7 @@ const Home: NextPage = () => {
         body: blockNumber.toString(),
         icon: `${window.location.origin}/eth-global.png`,
         url: "https://hackers.gm.walletconnect.com/",
-        type: "gm_hourly",
+        type: "gm_hacker",
       });
     }
   }, [wagmiPublicClient, handleSendNotification, isSubscribed]);

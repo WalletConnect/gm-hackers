@@ -31,7 +31,7 @@ const NotifySubscription = () => {
         body: blockNumber.toString(),
         icon: `${window.location.origin}/eth-global.png`,
         url: "https://hackers.gm.walletconnect.com/",
-        type: "gm_hourly",
+        type: "gm_hacker",
       });
     }
   }, [wagmiPublicClient, handleSendNotification, isSubscribed]);
@@ -56,7 +56,7 @@ const NotifySubscription = () => {
             body: NOTIFICATION_BODY,
             icon: `${window.location.origin}/eth-global.png`,
             url: "https://hackers.gm.walletconnect.com/",
-            type: "gm_hourly",
+            type: "gm_hacker",
           });
         }}
         isDisabled={!isSubscribed || isSending}
