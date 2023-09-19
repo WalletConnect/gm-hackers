@@ -56,17 +56,12 @@ const Home: NextPage = () => {
     onDisconnect: () => window.location.reload(),
   });
   const { signMessageAsync } = useSignMessage();
-  const {
-    account = "",
-    setAccount,
-    register: registerIdentity,
-  } = useW3iAccount();
-  const { subscribe, isSubscribed, unsubscribe } = useManageSubscription({
-    account,
-  });
-  const { subscription } = useSubscription({ account });
-  const { messages, deleteMessage } = useMessages({ account });
-  const { scopes, updateScopes } = useSubscriptionScopes({ account });
+  const { account, setAccount, register: registerIdentity } = useW3iAccount();
+  const { subscribe, isSubscribed, unsubscribe } =
+    useManageSubscription(account);
+  const { subscription } = useSubscription(account);
+  const { messages, deleteMessage } = useMessages(account);
+  const { scopes, updateScopes } = useSubscriptionScopes(account);
   const { handleSendNotification } = useSendNotification();
   const wagmiPublicClient = usePublicClient();
   const toast = useToast();
@@ -124,9 +119,6 @@ const Home: NextPage = () => {
   }, [signMessage, account, registerIdentity]);
 
   useEffect(() => {
-    if (!Object.keys(scopes)?.length) {
-      return;
-    }
     Object.entries(scopes).forEach(([scopeKey, scope]) => {
       const s: any = scope;
       if (s.enabled) {
