@@ -43,7 +43,6 @@ import { FaBell, FaBellSlash } from "react-icons/fa";
 import { BsSendFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import useSendNotification from "../utils/useSendNotification";
-import { useInterval } from "usehooks-ts";
 import Link from "next/link";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
@@ -149,9 +148,9 @@ const Home: NextPage = () => {
     }
   }, [wagmiPublicClient, handleSendNotification, isSubscribed]);
 
-  useInterval(() => {
+  useEffect(() => {
     handleBlockNotification();
-  }, 12000);
+  }, [handleBlockNotification]);
 
   return (
     <Flex w="xl" flexDirection={"column"} p={10}>
@@ -184,10 +183,12 @@ const Home: NextPage = () => {
           </Flex>
         ) : (
           <Tooltip
-            label="Connect your wallet first"
+            label={
+              "Connect your wallet first and register your account with the signature request"
+            }
             hasArrow
             rounded="lg"
-            hidden={Boolean(address) && Boolean(account)}
+            hidden={Boolean(account)}
           >
             <Button
               leftIcon={<FaBell />}
@@ -195,7 +196,7 @@ const Home: NextPage = () => {
               colorScheme="cyan"
               rounded="full"
               variant="outline"
-              isDisabled={!address || !account}
+              isDisabled={!Boolean(account)}
             >
               Subscribe
             </Button>
@@ -251,7 +252,7 @@ const Home: NextPage = () => {
                         >
                           <AlertIcon />
 
-                          <Flex flexDir={"column"}>
+                          <Flex flexDir={"column"} flexGrow={1}>
                             <AlertTitle>{message.title}</AlertTitle>
                             <AlertDescription flexGrow={1}>
                               {message.body}
@@ -292,7 +293,7 @@ const Home: NextPage = () => {
               </AccordionButton>
               <AccordionPanel pb={4} display="flex" flexDir="column">
                 <VStack as="form" onSubmit={onSubmit}>
-                  {Object.entries(scopes).map(([scopeKey, scope]) => {
+                  {Object.entries(scopes)?.map(([scopeKey, scope]) => {
                     return (
                       <FormControl
                         key={scopeKey}

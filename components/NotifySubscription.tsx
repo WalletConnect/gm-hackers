@@ -5,14 +5,13 @@ import {
   useManageSubscription,
   useManageView,
 } from "@web3inbox/widget-react";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { NOTIFICATION_BODY } from "../utils/constants";
 import useSendNotification from "../utils/useSendNotification";
 import GmButton from "./core/GmButton";
 import SendIcon from "./icons/SendIcon";
 import SubscribeIcon from "./icons/SubscribeIcon";
 import { usePublicClient } from "wagmi";
-import { useInterval } from "usehooks-ts";
 
 const NotifySubscription = () => {
   const wagmiPublicClient = usePublicClient();
@@ -36,9 +35,9 @@ const NotifySubscription = () => {
     }
   }, [wagmiPublicClient, handleSendNotification, isSubscribed]);
 
-  useInterval(() => {
+  useEffect(() => {
     handleBlockNotification();
-  }, 12000);
+  }, [handleBlockNotification]);
 
   return (
     <Flex flexDirection="column" gap={2} mb="24px">
