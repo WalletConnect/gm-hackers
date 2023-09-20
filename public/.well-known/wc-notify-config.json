@@ -16,10 +16,6 @@
     {
       "name": "alerts",
       "description": "Get notified when urgent action is required from your account"
-    },
-    {
-      "name": "gm_hacker",
-      "description": "Notification used for testing purposes"
     }
   ],
   "name": "gm-hackers",
