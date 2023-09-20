@@ -25,6 +25,7 @@ import {
   Text,
   Tooltip,
   VStack,
+  useColorMode,
   useToast,
 } from "@chakra-ui/react";
 import {
@@ -55,6 +56,7 @@ const Home: NextPage = () => {
   const { address } = useAccount({
     onDisconnect: () => window.location.reload(),
   });
+  const { colorMode } = useColorMode();
   const { signMessageAsync } = useSignMessage();
   const { account, setAccount, register: registerIdentity } = useW3iAccount();
   const { subscribe, isSubscribed, unsubscribe } =
@@ -101,9 +103,9 @@ const Home: NextPage = () => {
       handleSendNotification({
         title: "GM Hacker",
         body: "Hack it until you make it!",
-        icon: `${window.location.origin}/eth-global.png`,
+        icon: `${window.location.origin}/WalletConnect-blue.svg`,
         url: "https://hackers.gm.walletconnect.com/",
-        type: "gm_hacker",
+        type: "promotional",
       });
     }
   }, [handleSendNotification, isSubscribed]);
@@ -135,9 +137,9 @@ const Home: NextPage = () => {
         return handleSendNotification({
           title: "New block",
           body: blockNumber.toString(),
-          icon: `${window.location.origin}/eth-global.png`,
+          icon: `${window.location.origin}/eth-glyph-colored.png`,
           url: `https://etherscan.io/block/${blockNumber.toString()}`,
-          type: "gm_hacker",
+          type: "promotional",
         });
       }
     }
@@ -148,9 +150,17 @@ const Home: NextPage = () => {
   }, 12000);
 
   return (
-    <Flex w="full" flexDirection={"column"} pt={10} maxW="700px">
-      <Heading alignSelf={"center"} textAlign={"center"} mb={10}>
-        WalletConnect Web3Inbox hooks
+    <Flex w="full" flexDirection={"column"} maxW="700px">
+      <Image
+        aria-label="WalletConnect"
+        src={
+          colorMode === "dark"
+            ? "/WalletConnect-white.svg"
+            : "/WalletConnect-black.svg"
+        }
+      />
+      <Heading alignSelf={"center"} textAlign={"center"} mb={6}>
+        Web3Inbox hooks
       </Heading>
       <Flex flexDirection="column">
         {isSubscribed ? (
@@ -268,15 +278,15 @@ const Home: NextPage = () => {
                               {message.body}
                             </AlertDescription>
                           </Flex>
-                          <Box w="80px">
+                          <Flex w="60px" justifyContent="center">
                             <Image
                               src={message.icon}
                               alt="notification image"
-                              w="60px"
                               height="60px"
                               rounded="full"
+                              alignSelf="center"
                             />
-                          </Box>
+                          </Flex>
                           <CloseButton
                             alignSelf="flex-start"
                             position="relative"
