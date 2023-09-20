@@ -38,7 +38,7 @@
   },
   "overrides": {
     "@web3inbox/core": {
-      "@walletconnect/notify-client": "0.12.0-6d41a0c"
+      "@walletconnect/notify-client": "0.12.0-14c2331"
     }
   }
 }
