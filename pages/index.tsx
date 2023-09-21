@@ -54,7 +54,10 @@ const Home: NextPage = () => {
     domain: "hackers.gm.walletconnect.com",
   });
   const { address } = useAccount({
-    onDisconnect: () => window.location.reload(),
+    onDisconnect: () => {
+      localStorage.removeItem("wc@2:client:0.3//session");
+      window.location.reload();
+    },
   });
   const { colorMode } = useColorMode();
   const { signMessageAsync } = useSignMessage();
