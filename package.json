@@ -13,8 +13,8 @@
     "@chakra-ui/react": "^2.5.4",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@web3inbox/core": "^0.0.10",
-    "@web3inbox/widget-react": "^0.6.14",
+    "@web3inbox/core": "^0.0.11",
+    "@web3inbox/widget-react": "^0.6.15",
     "@web3modal/wagmi": "^3.0.0-beta.4",
     "framer-motion": "^10.10.0",
     "lokijs": "^1.5.12",
@@ -38,7 +38,7 @@
   },
   "overrides": {
     "@web3inbox/core": {
-      "@walletconnect/notify-client": "0.12.0-14c2331"
+      "@walletconnect/notify-client": "0.13.0"
     }
   }
 }
