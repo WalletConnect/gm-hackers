@@ -73,18 +73,16 @@ To quality for bounties, notifications must be visible [app.web3inbox.com](https
         },
       });
 
-      fetch(
-        // Replace PROJECT_ID with your projectId from WalletConnect Cloud.
+      const notifyRes = await fetch(
         `https://notify.walletconnect.com/${projectId}/notify`,
         {
           method: "POST",
           headers,
           body,
         }
-      )
-        .then((response) => response.json())
-        .then((result) => console.log(result))
-        .catch((error) => console.error("error", error));
+      );
+      const result = await notifyRes.json();
+      console.log(result);
       ```
 
 ## Running locally
