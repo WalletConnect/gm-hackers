@@ -59,8 +59,7 @@ const Home: NextPage = () => {
   // Web3Inbox SDK hooks
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId,
-    // Replace with your deployment hostname (eg: my-hack-project.vercel.app)
-    domain: "hackers.gm.walletconnect.com",
+    domain: window.location.hostname,
   });
   const { account, setAccount, register: registerIdentity } = useW3iAccount();
   const { subscribe, unsubscribe, isSubscribed } =
@@ -113,7 +112,7 @@ const Home: NextPage = () => {
         title: "GM Hacker",
         body: "Hack it until you make it!",
         icon: `${window.location.origin}/WalletConnect-blue.svg`,
-        url: "https://hackers.gm.walletconnect.com/",
+        url: window.location.origin,
         type: "promotional",
       });
     }
