@@ -1,17 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
+const notifyServerUrl = process.env.NOTIFY_SERVER_URL || "https://notify.walletconnect.com";
+
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 if (!projectId) {
   throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
 }
 
-const notifyServerUrl = process.env.NOTIFY_SERVER_URL;
-if (!notifyServerUrl) {
-  throw new Error("You need to provide NOTIFY_SERVER_URL env variable");
-}
-const projectSecret = process.env.NOTIFY_PROJECT_SECRET;
-if (!projectSecret) {
-  throw new Error("You need to provide NOTIFY_PROJECT_SECRET env variable");
+const notifyApiSecret = process.env.NOTIFY_API_SECRET;
+if (!notifyApiSecret) {
+  throw new Error("You need to provide NOTIFY_API_SECRET env variable");
 }
 
 export default async function handler(
@@ -32,7 +30,7 @@ export default async function handler(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${projectSecret}`,
+        Authorization: `Bearer ${notifyApiSecret}`,
       },
       body: JSON.stringify(notificationPayload),
     });
