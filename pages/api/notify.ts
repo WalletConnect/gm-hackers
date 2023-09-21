@@ -5,13 +5,9 @@ if (!projectId) {
   throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
 }
 
-const notifyServerUrl = process.env.NOTIFY_SERVER_URL;
-if (!notifyServerUrl) {
-  throw new Error("You need to provide NOTIFY_SERVER_URL env variable");
-}
-const projectSecret = process.env.NOTIFY_PROJECT_SECRET;
-if (!projectSecret) {
-  throw new Error("You need to provide NOTIFY_PROJECT_SECRET env variable");
+const notifyApiSecret = process.env.NOTIFY_API_SECRET;
+if (!notifyApiSecret) {
+  throw new Error("You need to provide NOTIFY_API_SECRET env variable");
 }
 
 export default async function handler(
@@ -28,14 +24,17 @@ export default async function handler(
   }
 
   try {
-    const result = await fetch(`${notifyServerUrl}/${projectId}/notify`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${projectSecret}`,
-      },
-      body: JSON.stringify(notificationPayload),
-    });
+    const result = await fetch(
+      `https://notify.walletconnect.com/${projectId}/notify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${notifyApiSecret}`,
+        },
+        body: JSON.stringify(notificationPayload),
+      }
+    );
 
     const gmRes = await result.json(); // { "sent": ["eip155:1:0xafeb..."], "failed": [], "not_found": [] }
     console.log("Notify Server response", gmRes);
