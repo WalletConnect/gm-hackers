@@ -69,7 +69,7 @@ const Home: NextPage = () => {
   const { messages, deleteMessage } = useMessages(account);
   const { scopes, updateScopes } = useSubscriptionScopes(account);
 
-  const { handleSendNotification } = useSendNotification();
+  const { handleSendNotification, isSending } = useSendNotification();
 
   const { signMessageAsync } = useSignMessage();
   const wagmiPublicClient = usePublicClient();
@@ -191,6 +191,8 @@ const Home: NextPage = () => {
               isDisabled={!isW3iInitialized}
               colorScheme="blue"
               rounded="full"
+              isLoading={isSending}
+              loadingText="Sending..."
             >
               Send test notification
             </Button>

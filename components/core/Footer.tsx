@@ -17,7 +17,7 @@ function Footer() {
           rel="noopener noreferrer"
           variant="outline"
           icon={<FaGithub />}
-          href="https://github.com/WalletConnect/gm-hackers#gm-hackers-react-typescript-nextjs-wagmi"
+          href="https://github.com/WalletConnect/gm-hackers#gm-hackers-web3inbox-nextjs-wagmi-react-typescript"
         />
         <IconButton
           aria-label="toggle theme"
