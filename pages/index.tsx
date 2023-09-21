@@ -40,7 +40,7 @@ import "@web3inbox/widget-react/dist/compiled.css";
 
 import { useAccount, usePublicClient, useSignMessage } from "wagmi";
 import { FaBell, FaBellSlash } from "react-icons/fa";
-import { BsSendFill } from "react-icons/bs";
+import { BsPersonFillCheck, BsSendFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import useSendNotification from "../utils/useSendNotification";
 import Link from "next/link";
@@ -62,9 +62,19 @@ const Home: NextPage = () => {
     // Replace with your deployment hostname (eg: my-hack-project.vercel.app)
     domain: "hackers.gm.walletconnect.com",
   });
-  const { account, setAccount, register: registerIdentity } = useW3iAccount();
-  const { subscribe, unsubscribe, isSubscribed } =
-    useManageSubscription(account);
+  const {
+    account,
+    setAccount,
+    register: registerIdentity,
+    identityKey,
+  } = useW3iAccount();
+  const {
+    subscribe,
+    unsubscribe,
+    isSubscribed,
+    isSubscribing,
+    isUnsubscribing,
+  } = useManageSubscription(account);
   const { subscription } = useSubscription(account);
   const { messages, deleteMessage } = useMessages(account);
   const { scopes, updateScopes } = useSubscriptionScopes(account);
@@ -119,15 +129,20 @@ const Home: NextPage = () => {
     }
   }, [handleSendNotification, isSubscribed]);
 
+  const handleRegistration = useCallback(async () => {
+    if (!account) return;
+    try {
+      const identity = await registerIdentity(signMessage);
+      console.log({ identity });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [signMessage, registerIdentity, account]);
+
   useEffect(() => {
     if (!address) return;
     setAccount(`eip155:1:${address}`);
   }, [signMessage, address, setAccount]);
-
-  useEffect(() => {
-    if (!account) return;
-    registerIdentity(signMessage);
-  }, [signMessage, account, registerIdentity]);
 
   useEffect(() => {
     Object.entries(scopes).forEach(([scopeKey, scope]) => {
@@ -171,19 +186,10 @@ const Home: NextPage = () => {
       <Heading alignSelf={"center"} textAlign={"center"} mb={6}>
         Web3Inbox hooks
       </Heading>
-      <Flex flexDirection="column">
+
+      <Flex flexDirection="column" gap={4}>
         {isSubscribed ? (
           <Flex flexDirection={"column"} alignItems="center" gap={4}>
-            <Button
-              leftIcon={<FaBellSlash />}
-              variant="outline"
-              onClick={unsubscribe}
-              isDisabled={!isW3iInitialized}
-              colorScheme="red"
-              rounded="full"
-            >
-              Unsubscribe
-            </Button>
             <Button
               leftIcon={<BsSendFill />}
               variant="outline"
@@ -196,29 +202,58 @@ const Home: NextPage = () => {
             >
               Send test notification
             </Button>
+            <Button
+              leftIcon={<FaBellSlash />}
+              onClick={unsubscribe}
+              variant="outline"
+              isDisabled={!isW3iInitialized}
+              colorScheme="red"
+              isLoading={isUnsubscribing}
+              loadingText="Unsubscribing..."
+              rounded="full"
+            >
+              Unsubscribe
+            </Button>
+          </Flex>
+        ) : !identityKey || !account ? (
+          <Flex flexDirection={"column"} alignItems="center" gap={4}>
+            <Tooltip
+              label={
+                !address
+                  ? "Connect your wallet first."
+                  : "Register your account by approving the signature request."
+              }
+              hasArrow
+              rounded="lg"
+              hidden={Boolean(account)}
+            >
+              <Button
+                leftIcon={<BsPersonFillCheck />}
+                variant="outline"
+                onClick={handleRegistration}
+                isDisabled={!address}
+                rounded="full"
+                w="fit-content"
+              >
+                Register
+              </Button>
+            </Tooltip>
           </Flex>
         ) : (
-          <Tooltip
-            label={
-              "Connect your wallet first and register your account by approving the signature request."
-            }
-            hasArrow
-            rounded="lg"
-            hidden={Boolean(account)}
+          <Button
+            leftIcon={<FaBell />}
+            onClick={subscribe}
+            colorScheme="cyan"
+            rounded="full"
+            variant="outline"
+            w="fit-content"
+            alignSelf="center"
+            isLoading={isSubscribing}
+            loadingText="Subscribing..."
+            isDisabled={!Boolean(account)}
           >
-            <Button
-              leftIcon={<FaBell />}
-              onClick={subscribe}
-              colorScheme="cyan"
-              rounded="full"
-              variant="outline"
-              w="fit-content"
-              alignSelf="center"
-              isDisabled={!Boolean(account)}
-            >
-              Subscribe
-            </Button>
-          </Tooltip>
+            Subscribe
+          </Button>
         )}
 
         {isSubscribed && (
