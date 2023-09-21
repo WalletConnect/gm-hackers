@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "types": [
+    {
+      "name": "promotional",
+      "description": "Get notified when new features or products are launched"
+    },
+    {
+      "name": "transactional",
+      "description": "Get notified when new on-chain transactions target your account"
+    },
+    {
+      "name": "private",
+      "description": "Get notified when new updates or offers are sent privately to your account"
+    },
+    {
+      "name": "alerts",
+      "description": "Get notified when urgent action is required from your account"
+    }
+  ],
+  "name": "gm-hackers",
+  "icons": [
+    "https://docs.walletconnect.com/assets/images/web3inboxLogo-b05bb667494386860888488e89856cd9.png"
+  ],
+  "description": "Get started in minutes with WalletConnect Notify."
+}

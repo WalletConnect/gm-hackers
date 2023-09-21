@@ -1,0 +1,35 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "id": "did:web:hackers.gm.walletconnect.com",
+  "verificationMethod": [
+    {
+      "id": "did:web:hackers.gm.walletconnect.com#wc-notify-subscribe-key",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:hackers.gm.walletconnect.com",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "X25519",
+        "x": "_WNqLv1ic6CXNll9wKJd4Puu_hi9HzJCGFGi58MjEVc"
+      }
+    },
+    {
+      "id": "did:web:hackers.gm.walletconnect.com#wc-notify-authentication-key",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:hackers.gm.walletconnect.com",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "bgY348PAMqaNAJ-WXWLD40Y3CUw_0LOgH_EJHprVHZQ"
+      }
+    }
+  ],
+  "keyAgreement": [
+    "did:web:hackers.gm.walletconnect.com#wc-notify-subscribe-key"
+  ],
+  "authentication": [
+    "did:web:hackers.gm.walletconnect.com#wc-notify-authentication-key"
+  ]
+}
