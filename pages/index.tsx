@@ -139,8 +139,22 @@ const Home: NextPage = () => {
     }
   }, [signMessage, registerIdentity, account]);
 
+  const handleSubscribe = useCallback(async () => {
+    if (!identityKey) {
+      await handleRegistration();
+    }
+    await subscribe();
+  }, [identityKey, handleRegistration, subscribe]);
+
+  const handleUnsubscribe = useCallback(async () => {
+    if (!identityKey) {
+      await handleRegistration();
+    }
+    await unsubscribe();
+  }, [identityKey, handleRegistration, unsubscribe]);
+
   useEffect(() => {
-    if (!address) return;
+    if (!Boolean(address)) return;
     setAccount(`eip155:1:${address}`);
   }, [signMessage, address, setAccount]);
 
@@ -204,9 +218,9 @@ const Home: NextPage = () => {
             </Button>
             <Button
               leftIcon={<FaBellSlash />}
-              onClick={unsubscribe}
+              onClick={handleUnsubscribe}
               variant="outline"
-              isDisabled={!isW3iInitialized}
+              isDisabled={!isW3iInitialized || !account}
               colorScheme="red"
               isLoading={isUnsubscribing}
               loadingText="Unsubscribing..."
@@ -215,23 +229,23 @@ const Home: NextPage = () => {
               Unsubscribe
             </Button>
           </Flex>
-        ) : !identityKey || !account ? (
+        ) : !account ? (
           <Flex flexDirection={"column"} alignItems="center" gap={4}>
             <Tooltip
               label={
-                !address
+                !Boolean(address)
                   ? "Connect your wallet first."
-                  : "Register your account by approving the signature request."
+                  : "Register your account."
               }
               hasArrow
               rounded="lg"
-              hidden={Boolean(account)}
+              hidden={Boolean(identityKey)}
             >
               <Button
                 leftIcon={<BsPersonFillCheck />}
                 variant="outline"
                 onClick={handleRegistration}
-                isDisabled={!address}
+                isDisabled={!Boolean(address)}
                 rounded="full"
                 w="fit-content"
               >
@@ -242,7 +256,7 @@ const Home: NextPage = () => {
         ) : (
           <Button
             leftIcon={<FaBell />}
-            onClick={subscribe}
+            onClick={handleSubscribe}
             colorScheme="cyan"
             rounded="full"
             variant="outline"
