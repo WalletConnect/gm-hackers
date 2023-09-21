@@ -49,26 +49,32 @@ import { useInterval } from "usehooks-ts";
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
 const Home: NextPage = () => {
-  const isW3iInitialized = useInitWeb3InboxClient({
-    projectId,
-    domain: "hackers.gm.walletconnect.com",
-  });
   const { address } = useAccount({
     onDisconnect: () => {
       localStorage.removeItem("wc@2:client:0.3//session");
       window.location.reload();
     },
   });
-  const { colorMode } = useColorMode();
-  const { signMessageAsync } = useSignMessage();
+
+  // Web3Inbox SDK hooks
+  const isW3iInitialized = useInitWeb3InboxClient({
+    projectId,
+    // Replace with your vercel deployment
+    domain: "hackers.gm.walletconnect.com",
+  });
   const { account, setAccount, register: registerIdentity } = useW3iAccount();
-  const { subscribe, isSubscribed, unsubscribe } =
+  const { subscribe, unsubscribe, isSubscribed } =
     useManageSubscription(account);
   const { subscription } = useSubscription(account);
   const { messages, deleteMessage } = useMessages(account);
   const { scopes, updateScopes } = useSubscriptionScopes(account);
+
   const { handleSendNotification } = useSendNotification();
+
+  const { signMessageAsync } = useSignMessage();
   const wagmiPublicClient = usePublicClient();
+  const { colorMode } = useColorMode();
+
   const toast = useToast();
   const [lastBlock, setLastBlock] = useState<string>();
 
@@ -142,7 +148,7 @@ const Home: NextPage = () => {
           body: blockNumber.toString(),
           icon: `${window.location.origin}/eth-glyph-colored.png`,
           url: `https://etherscan.io/block/${blockNumber.toString()}`,
-          type: "promotional",
+          type: "transactional",
         });
       }
     }
