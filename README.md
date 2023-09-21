@@ -17,18 +17,18 @@ Subscriptions to dapp notifications are synced across all devices that use the s
 
 1. Head over [WalletConnect Cloud](https://cloud.walletconnect.com) and Sign in or Sign up if you don't have an account.
 2. Create a project and take note of your Project ID.
-3. Deploy your app to a public URL. Note you will need to set the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2. Some options to deploy to a public URL include:
-   - [Deploy to Vercel](https://vercel.com/import/git?s=https://github.com/WalletConnect/gm-hackers)
-   - [Deploy to Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/WalletConnect/gm-hackers)
+3. Deploy your app to a public URL. Note you will need to set the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2. Some options to create your repo and deploy to a public URL include:
+   - [Create repo & Deploy to Vercel](https://vercel.com/import/git?s=https://github.com/WalletConnect/gm-hackers)
+   - [Create repo & Deploy to Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/WalletConnect/gm-hackers)
    - Fork/clone this repo and deploy yourself
 4. Back in the WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API Step 1, provide your public URL as the dapp URL. Click Save.
-5. Next you will need to host the two files on this page at the `/.well-known/` directory of your public URL. You can do this by saving them to the `/public/.well-known/` directory of your fork of this template repo. Note that you will need to overwrite the two files that already exist.
+5. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
+6. Next, you will need to host the two files on this page at the `/.well-known/` directory of your public URL. You can do this by saving them to the `/public/.well-known/` directory of your fork of this template repo. Note that you will need to overwrite the two files that already exist.
    - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
    - Download `wc-notify-config.json` (Step 3: “Download template”) to `/public/.well-known/wc-notify-config.json`
      - Update the `description` field in `wc-notify-config.json` to the description of your app.
    - Deploy your changes in `/public/.well-known/` to your public URL (e.g. by committing and pushing).
-6. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch under the Notify API and switch it on. You should see a success toast: "Notify configuration successfully verified"
-7. Navigate to your project's Settings tab. Under Secrets you should see a new `notify_api_key` secret created. Note you may need to refresh the page a few times to see this. Copy this secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Deploy again.
+7. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
 
 ### Test and view notifications
 
