@@ -24,10 +24,21 @@ Subscriptions to dapp notifications are synced across all devices that use the s
 4. Back in the WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API Step 1, provide your public URL as the dapp URL. Click Save.
 5. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
 6. Next, you will need to host the two files on this page at the `/.well-known/` directory of your public URL. You can do this by saving them to the `/public/.well-known/` directory of your fork of this template repo. Note that you will need to overwrite the two files that already exist.
+
    - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
    - Download `wc-notify-config.json` (Step 3: “Download template”) to `/public/.well-known/wc-notify-config.json`
      - Update the `description` field in `wc-notify-config.json` to the description of your app.
+   - Update your `pages/index.tsx` client initialization to include the hostname of your deployment.
+
+     ```js
+     const isW3iInitialized = useInitWeb3InboxClient({
+       projectId,
+       domain: "your-hack-project.vercel.app",
+     });
+     ```
+
    - Deploy your changes in `/public/.well-known/` to your public URL (e.g. by committing and pushing).
+
 7. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
 
 ### Test and view notifications

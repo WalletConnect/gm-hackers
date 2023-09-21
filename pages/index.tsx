@@ -59,7 +59,7 @@ const Home: NextPage = () => {
   // Web3Inbox SDK hooks
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId,
-    // Replace with your vercel deployment
+    // Replace with your deployment hostname (eg: my-hack-project.vercel.app)
     domain: "hackers.gm.walletconnect.com",
   });
   const { account, setAccount, register: registerIdentity } = useW3iAccount();
