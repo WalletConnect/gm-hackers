@@ -5,15 +5,15 @@ if (!projectId) {
   throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
 }
 
-const notifyApiSecret = process.env.NOTIFY_API_SECRET;
-if (!notifyApiSecret) {
-  throw new Error("You need to provide NOTIFY_API_SECRET env variable");
-}
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const notifyApiSecret = process.env.NOTIFY_API_SECRET;
+  if (!notifyApiSecret) {
+    throw new Error("You need to provide NOTIFY_API_SECRET env variable");
+  }
+
   if (req.method !== "GET") {
     throw new ReferenceError("Method not allowed");
   }

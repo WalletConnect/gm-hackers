@@ -1,0 +1,2 @@
+[template.environment]
+  NEXT_PUBLIC_PROJECT_ID = "project ID from https://cloud.walletconnect.com"
