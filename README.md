@@ -12,6 +12,7 @@ This example dapp shows basic dapp usage of the Web3Inbox SDK to send a notifica
 Subscriptions to dapp notifications are synced across all devices that use the same blockchain account.
 
 ## Hacker guide
+<img width="1426" alt="image" src="https://github.com/WalletConnect/gm-hackers/assets/45455218/83f659d6-8d31-4807-a35e-e1a27c8f8649">
 
 [Watch Tutorial 🖥️](https://www.loom.com/share/a7001711b8a94500b827a9d2655c8654?sid=1a36ccfa-9ee8-42a5-a882-9b78ac6e846a)
 
