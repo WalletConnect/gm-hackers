@@ -28,15 +28,7 @@ Subscriptions to dapp notifications are synced across all devices that use the s
    - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
    - Download `wc-notify-config.json` (Step 3: “Download template”) to `/public/.well-known/wc-notify-config.json`
      - Update the `description` field in `wc-notify-config.json` to the description of your app.
-   - Update your `pages/index.tsx` client initialization to include the hostname of your deployment.
-
-     ```js
-     const isW3iInitialized = useInitWeb3InboxClient({
-       projectId,
-       domain: "your-hack-project.vercel.app",
-     });
-     ```
-
+   - Update your `NEXT_PUBLIC_APP_DOMAIN` environment variable to include the hostname of your deployment.
    - Deploy your changes in `/public/.well-known/` to your public URL (e.g. by committing and pushing).
 
 7. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"

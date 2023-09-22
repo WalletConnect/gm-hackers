@@ -1,66 +1,42 @@
 "use client";
 import type { NextPage } from "next";
 import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import {
   Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Box,
   Button,
-  CloseButton,
-  Code,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
   Image,
-  Switch,
-  Text,
   Tooltip,
-  VStack,
   useColorMode,
   useToast,
 } from "@chakra-ui/react";
 import {
   useInitWeb3InboxClient,
   useManageSubscription,
-  useMessages,
-  useSubscription,
-  useSubscriptionScopes,
   useW3iAccount,
 } from "@web3inbox/widget-react";
 import "@web3inbox/widget-react/dist/compiled.css";
 
 import { useAccount, usePublicClient, useSignMessage } from "wagmi";
-import { FaBell, FaBellSlash } from "react-icons/fa";
+import { FaBell, FaBellSlash, FaPause, FaPlay } from "react-icons/fa";
 import { BsPersonFillCheck, BsSendFill } from "react-icons/bs";
-import { BiSave } from "react-icons/bi";
 import useSendNotification from "../utils/useSendNotification";
-import Link from "next/link";
 import { useInterval } from "usehooks-ts";
+import Preferences from "../components/Preferences";
+import Messages from "../components/Messages";
+import Subscription from "../components/Subscription";
+import { sendNotification } from "../utils/fetchNotify";
+import Subscribers from "../components/Subscribers";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
+const appDomain = process.env.NEXT_PUBLIC_APP_DOMAIN as string;
 
 const Home: NextPage = () => {
-  const { address } = useAccount({
-    onDisconnect: () => {
-      localStorage.removeItem("wc@2:client:0.3//session");
-      window.location.reload();
-    },
-  });
-
-  // Web3Inbox SDK hooks
+  /** Web3Inbox SDK hooks **/
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId,
-    // Replace with your deployment hostname (eg: my-hack-project.vercel.app)
-    domain: "hackers.gm.walletconnect.com",
+    domain: appDomain,
   });
   const {
     account,
@@ -75,20 +51,22 @@ const Home: NextPage = () => {
     isSubscribing,
     isUnsubscribing,
   } = useManageSubscription(account);
-  const { subscription } = useSubscription(account);
-  const { messages, deleteMessage } = useMessages(account);
-  const { scopes, updateScopes } = useSubscriptionScopes(account);
 
-  const { handleSendNotification, isSending } = useSendNotification();
-
+  const { address } = useAccount({
+    onDisconnect: () => {
+      setAccount("");
+    },
+  });
   const { signMessageAsync } = useSignMessage();
   const wagmiPublicClient = usePublicClient();
+
   const { colorMode } = useColorMode();
-
   const toast = useToast();
-  const [lastBlock, setLastBlock] = useState<string>();
 
-  const { register, setValue, handleSubmit } = useForm();
+  const { handleSendNotification, isSending } = useSendNotification();
+  const [lastBlock, setLastBlock] = useState<string>();
+  const [isBlockNotificationEnabled, setIsBlockNotificationEnabled] =
+    useState(true);
 
   const signMessage = useCallback(
     async (message: string) => {
@@ -100,40 +78,11 @@ const Home: NextPage = () => {
     },
     [signMessageAsync]
   );
-  const onSubmit = handleSubmit(async (formData) => {
-    const enabledScopes = Object.entries(formData)
-      .filter(([key, isEnabled]) => isEnabled)
-      .map(([key]) => key);
-    try {
-      await updateScopes(enabledScopes);
-      toast({
-        title: "Preferences updated",
-        status: "success",
-      });
-    } catch (error) {
-      toast({
-        title: "Failed to update preferences",
-        status: "error",
-      });
-    }
-  });
-  const handleTestNotification = useCallback(async () => {
-    if (isSubscribed) {
-      handleSendNotification({
-        title: "GM Hacker",
-        body: "Hack it until you make it!",
-        icon: `${window.location.origin}/WalletConnect-blue.svg`,
-        url: "https://hackers.gm.walletconnect.com/",
-        type: "promotional",
-      });
-    }
-  }, [handleSendNotification, isSubscribed]);
 
   const handleRegistration = useCallback(async () => {
     if (!account) return;
     try {
-      const identity = await registerIdentity(signMessage);
-      console.log({ identity });
+      await registerIdentity(signMessage);
     } catch (error) {
       console.log(error);
     }
@@ -153,35 +102,65 @@ const Home: NextPage = () => {
     await unsubscribe();
   }, [identityKey, handleRegistration, unsubscribe]);
 
+  // We need to set the account as soon as the user is connected
   useEffect(() => {
     if (!Boolean(address)) return;
     setAccount(`eip155:1:${address}`);
   }, [signMessage, address, setAccount]);
 
-  useEffect(() => {
-    Object.entries(scopes).forEach(([scopeKey, scope]) => {
-      const s: any = scope;
-      if (s.enabled) {
-        setValue(scopeKey, s.enabled);
-      }
-    });
-  }, [scopes, setValue]);
-
-  const handleBlockNotification = useCallback(async () => {
+  // handleSendNotification will send a notification to the current user and includes error handling.
+  // If you don't want to use this hook and want more flexibility, you can use sendNotification.
+  const handleTestNotification = useCallback(async () => {
     if (isSubscribed) {
+      handleSendNotification({
+        title: "GM Hacker",
+        body: "Hack it until you make it!",
+        icon: `${window.location.origin}/WalletConnect-blue.svg`,
+        url: window.location.origin,
+        type: "promotional",
+      });
+    }
+  }, [handleSendNotification, isSubscribed]);
+
+  // Example of how to send a notification based on some "automation".
+  // sendNotification will make a fetch request to /api/notify
+  const handleBlockNotification = useCallback(async () => {
+    if (isSubscribed && account && isBlockNotificationEnabled) {
       const blockNumber = await wagmiPublicClient.getBlockNumber();
       if (lastBlock !== blockNumber.toString()) {
         setLastBlock(blockNumber.toString());
-        return handleSendNotification({
-          title: "New block",
-          body: blockNumber.toString(),
-          icon: `${window.location.origin}/eth-glyph-colored.png`,
-          url: `https://etherscan.io/block/${blockNumber.toString()}`,
-          type: "transactional",
-        });
+        try {
+          toast({
+            title: "New block",
+            position: "top",
+            variant: "subtle",
+          });
+          await sendNotification({
+            accounts: [account], // accounts that we want to send the notification to.
+            notification: {
+              title: "New block",
+              body: blockNumber.toString(),
+              icon: `${window.location.origin}/eth-glyph-colored.png`,
+              url: `https://etherscan.io/block/${blockNumber.toString()}`,
+              type: "transactional",
+            },
+          });
+        } catch (error: any) {
+          toast({
+            title: "Failed to send new block notification",
+            description: error.message ?? "Something went wrong",
+          });
+        }
       }
     }
-  }, [wagmiPublicClient, handleSendNotification, isSubscribed, lastBlock]);
+  }, [
+    wagmiPublicClient,
+    isSubscribed,
+    lastBlock,
+    account,
+    toast,
+    isBlockNotificationEnabled,
+  ]);
 
   useInterval(() => {
     handleBlockNotification();
@@ -202,6 +181,7 @@ const Home: NextPage = () => {
       </Heading>
 
       <Flex flexDirection="column" gap={4}>
+        {/* The user is subscribed */}
         {isSubscribed ? (
           <Flex flexDirection={"column"} alignItems="center" gap={4}>
             <Button
@@ -209,12 +189,25 @@ const Home: NextPage = () => {
               variant="outline"
               onClick={handleTestNotification}
               isDisabled={!isW3iInitialized}
-              colorScheme="blue"
+              colorScheme="purple"
               rounded="full"
               isLoading={isSending}
               loadingText="Sending..."
             >
               Send test notification
+            </Button>
+            <Button
+              leftIcon={isBlockNotificationEnabled ? <FaPause /> : <FaPlay />}
+              variant="outline"
+              onClick={() =>
+                setIsBlockNotificationEnabled((isEnabled) => !isEnabled)
+              }
+              isDisabled={!isW3iInitialized}
+              colorScheme={isBlockNotificationEnabled ? "orange" : "blue"}
+              rounded="full"
+            >
+              {isBlockNotificationEnabled ? "Pause" : "Resume"} block
+              notifications
             </Button>
             <Button
               leftIcon={<FaBellSlash />}
@@ -230,6 +223,7 @@ const Home: NextPage = () => {
             </Button>
           </Flex>
         ) : !account ? (
+          // The user is not subscribed and not registered
           <Flex flexDirection={"column"} alignItems="center" gap={4}>
             <Tooltip
               label={
@@ -254,6 +248,7 @@ const Home: NextPage = () => {
             </Tooltip>
           </Flex>
         ) : (
+          // The user is not subscribed and but is registered
           <Button
             leftIcon={<FaBell />}
             onClick={handleSubscribe}
@@ -271,138 +266,11 @@ const Home: NextPage = () => {
         )}
 
         {isSubscribed && (
-          <Accordion defaultIndex={[1]} allowToggle mt={10}>
-            <AccordionItem>
-              <h2>
-                <AccordionButton>
-                  <Heading fontSize="md" as="span" flex="1" textAlign="left">
-                    Subscription
-                  </Heading>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4}>
-                <Code
-                  lang="json"
-                  maxW={{
-                    base: "280px",
-                    sm: "lg",
-                    md: "full",
-                  }}
-                >
-                  <pre
-                    style={{
-                      overflow: "scroll",
-                    }}
-                  >
-                    {JSON.stringify(subscription, undefined, 2)}
-                  </pre>
-                </Code>
-              </AccordionPanel>
-            </AccordionItem>
-
-            <AccordionItem>
-              <AccordionButton>
-                <Heading fontSize="md" as="span" flex="1" textAlign="left">
-                  Last Messages
-                </Heading>
-                <AccordionIcon />
-              </AccordionButton>
-              <Box overflowY="scroll" position={"relative"} maxH="400px">
-                <AccordionPanel
-                  display="flex"
-                  flexDirection={"column"}
-                  pb={4}
-                  gap={2}
-                  position={"relative"}
-                >
-                  {!messages?.length ? (
-                    <Text>No messages yet.</Text>
-                  ) : (
-                    messages
-                      .sort((a, b) => b.id - a.id)
-                      .map(({ id, message }) => (
-                        <Alert
-                          as={Link}
-                          href={message.url}
-                          target="_blank"
-                          key={id}
-                          status="info"
-                          rounded="xl"
-                        >
-                          <AlertIcon />
-
-                          <Flex flexDir={"column"} flexGrow={1}>
-                            <AlertTitle>{message.title}</AlertTitle>
-                            <AlertDescription flexGrow={1}>
-                              {message.body}
-                            </AlertDescription>
-                          </Flex>
-                          <Flex w="60px" justifyContent="center">
-                            <Image
-                              src={message.icon}
-                              alt="notification image"
-                              height="60px"
-                              rounded="full"
-                              alignSelf="center"
-                            />
-                          </Flex>
-                          <CloseButton
-                            alignSelf="flex-start"
-                            position="relative"
-                            right={-1}
-                            top={-1}
-                            onClick={async (e) => {
-                              e.preventDefault();
-                              deleteMessage(id);
-                            }}
-                          />
-                        </Alert>
-                      ))
-                  )}
-                </AccordionPanel>
-              </Box>
-            </AccordionItem>
-
-            <AccordionItem>
-              <AccordionButton>
-                <Heading as="span" fontSize="md" flex="1" textAlign="left">
-                  Preferences
-                </Heading>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel pb={4} display="flex" flexDir="column">
-                <VStack as="form" onSubmit={onSubmit}>
-                  {Object.entries(scopes)?.map(([scopeKey, scope]) => {
-                    return (
-                      <FormControl
-                        key={scopeKey}
-                        display="flex"
-                        justifyContent="space-between"
-                        gap={4}
-                      >
-                        <FormLabel htmlFor={scopeKey}>{scopeKey}</FormLabel>
-                        <Switch
-                          id={scopeKey}
-                          defaultChecked={(scope as any).enabled}
-                          {...register(scopeKey)}
-                        />
-                      </FormControl>
-                    );
-                  })}
-                  <Button
-                    leftIcon={<BiSave />}
-                    alignSelf="flex-end"
-                    variant="outline"
-                    colorScheme="blue"
-                    type="submit"
-                    rounded="full"
-                  >
-                    Save preferences
-                  </Button>
-                </VStack>
-              </AccordionPanel>
-            </AccordionItem>
+          <Accordion defaultIndex={[1]} allowToggle mt={10} rounded="xl">
+            <Subscription />
+            <Messages />
+            <Preferences />
+            <Subscribers />
           </Accordion>
         )}
       </Flex>
