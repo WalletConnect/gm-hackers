@@ -5,6 +5,8 @@
 
 ## Overview
 
+<img width="1552" alt="Screenshot 2023-09-22 at 7 29 48 PM" src="https://github.com/WalletConnect/gm-hackers/assets/26746725/7a024b35-f5c6-490d-b5a5-ba7b918514bf">
+
 Send notifications to a blockchain account using WalletConnect's Web3Inbox SDK.
 
 This example dapp shows basic dapp usage of the Web3Inbox SDK to send a notification whenever there is a new Ethereum block.
@@ -12,6 +14,10 @@ This example dapp shows basic dapp usage of the Web3Inbox SDK to send a notifica
 Subscriptions to dapp notifications are synced across all devices that use the same blockchain account.
 
 ## Hacker guide
+
+### Watch the tutorial guide 🖥️ 
+https://www.loom.com/share/a7001711b8a94500b827a9d2655c8654?sid=1a36ccfa-9ee8-42a5-a882-9b78ac6e846a
+
 
 ### Deploy the example dapp
 
