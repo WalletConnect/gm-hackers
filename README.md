@@ -5,7 +5,7 @@
 
 ## Overview
 
-<img width="1552" alt="Screenshot 2023-09-22 at 7 06 21 PM" src="https://github.com/WalletConnect/gm-hackers/assets/26746725/b8f180bb-4c79-4add-a2cb-3c02d13b9bc0">
+<img width="1552" alt="Screenshot 2023-09-22 at 7 29 48 PM" src="https://github.com/WalletConnect/gm-hackers/assets/26746725/7a024b35-f5c6-490d-b5a5-ba7b918514bf">
 
 Send notifications to a blockchain account using WalletConnect's Web3Inbox SDK.
 
