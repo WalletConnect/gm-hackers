@@ -1,14 +1,9 @@
 import { useToast } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { useW3iAccount } from "@web3inbox/widget-react";
+import { INotification } from "./types";
+import { sendNotification } from "./fetchNotify";
 
-interface INotification {
-  title: string;
-  body: string;
-  icon: string;
-  url: string;
-  type: string;
-}
 function useSendNotification() {
   const [isSending, setIsSending] = useState<boolean>(false);
   const toast = useToast();
@@ -16,31 +11,22 @@ function useSendNotification() {
 
   const handleSendNotification = useCallback(
     async (notification: INotification) => {
+      if (!account) {
+        return;
+      }
       setIsSending(true);
       try {
-        // Construct the payload, including the target `accounts`
-        // that should receive the notification.
-        const notificationPayload = {
+        const { success, message } = await sendNotification({
           accounts: [account],
           notification,
-        };
-
-        const result = await fetch("/api/notify", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(notificationPayload),
         });
-
-        const gmRes = await result.json();
-        const { success, message } = gmRes;
         setIsSending(false);
 
         toast({
           status: success ? "success" : "error",
           position: "top",
           variant: "subtle",
+          colorScheme: success ? "purple" : "red",
           title: success ? notification.title : "Message failed.",
         });
       } catch (error: any) {

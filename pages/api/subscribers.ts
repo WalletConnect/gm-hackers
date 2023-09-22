@@ -14,36 +14,26 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "POST") {
+  if (req.method !== "GET") {
     throw new ReferenceError("Method not allowed");
-  }
-
-  const notificationPayload = req.body;
-  if (!notificationPayload) {
-    return res.status(400).json({ success: false });
   }
 
   try {
     const result = await fetch(
-      `https://notify.walletconnect.com/${projectId}/notify`,
+      `https://notify.walletconnect.com/${projectId}/subscribers`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${notifyApiSecret}`,
         },
-        body: JSON.stringify(notificationPayload),
       }
     );
 
-    const gmRes = await result.json(); // { "sent": ["eip155:1:0xafeb..."], "failed": [], "not_found": [] }
-    console.log("Notify Server response - send notification", gmRes);
-    const isSuccessfulGm = gmRes.sent?.includes(
-      notificationPayload.accounts[0]
-    );
-    return res
-      .status(result.status)
-      .json({ success: isSuccessfulGm, message: gmRes?.reason });
+    const subscribers = await result.json(); // ["eip155:1:0xafeb...", "eip155:1:0xbcd..."]
+    console.log("Notify Server response - get subscribers", subscribers);
+
+    return res.status(result.status).json({ subscribers });
   } catch (error: any) {
     return res.status(500).json({
       success: false,
