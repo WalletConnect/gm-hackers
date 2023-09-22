@@ -44,7 +44,7 @@ Now you should have a fully functioning dapp that is capable of sending notifica
 
 First, test that you can subscribe to notifications by going to your dapp's public URL, connect your wallet, sign the SIWE message in your wallet, and press subscribe. Approximately every 12 seconds you should see a "New block" notification in the dapp's UI.
 
-To quality for bounties, notifications must be visible [app.web3inbox.com](https://app.web3inbox.com) or one of our sample wallets that supports Web3Inbox notifications (TODO). Note that these automated notifications will only be sent to your account if you have the UI open and with the same account connected.
+To quality for bounties, notifications must be visible [app.web3inbox.com](https://app.web3inbox.com) or one of our sample wallets that supports Web3Inbox notifications. Note that these automated notifications will only be sent to your account if you have the UI open and with the same account connected.
 
 ### Sending notifications
 
