@@ -31,7 +31,6 @@ function Preferences() {
       .filter(([key, isEnabled]) => isEnabled)
       .map(([key]) => key);
     try {
-      console.log({ enabledScopes });
       const isUpdated = await updateScopes(enabledScopes);
       if (isUpdated) {
         toast({
@@ -53,7 +52,6 @@ function Preferences() {
 
   // Set default values of selected preferences
   useEffect(() => {
-    console.log({ scopes });
     Object.entries(scopes).forEach(([scopeKey, scope]) => {
       const s: any = scope;
       setValue(scopeKey, s.enabled);

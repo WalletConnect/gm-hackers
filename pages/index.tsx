@@ -79,34 +79,26 @@ const Home: NextPage = () => {
     [signMessageAsync]
   );
 
-  const handleRegistration = useCallback(async () => {
-    if (!account) return;
-    try {
-      await registerIdentity(signMessage);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [signMessage, registerIdentity, account]);
-
-  const handleSubscribe = useCallback(async () => {
-    if (!identityKey) {
-      await handleRegistration();
-    }
-    await subscribe();
-  }, [identityKey, handleRegistration, subscribe]);
-
-  const handleUnsubscribe = useCallback(async () => {
-    if (!identityKey) {
-      await handleRegistration();
-    }
-    await unsubscribe();
-  }, [identityKey, handleRegistration, unsubscribe]);
-
   // We need to set the account as soon as the user is connected
   useEffect(() => {
     if (!Boolean(address)) return;
     setAccount(`eip155:1:${address}`);
   }, [signMessage, address, setAccount]);
+
+  const handleRegistration = useCallback(async () => {
+    if (!account) return;
+    try {
+      await registerIdentity(signMessage);
+    } catch (registerIdentityError) {
+      console.error({ registerIdentityError });
+    }
+  }, [signMessage, registerIdentity, account]);
+
+  useEffect(() => {
+    if (!identityKey) {
+      handleRegistration();
+    }
+  }, [handleRegistration, identityKey]);
 
   // handleSendNotification will send a notification to the current user and includes error handling.
   // If you don't want to use this hook and want more flexibility, you can use sendNotification.
@@ -181,7 +173,6 @@ const Home: NextPage = () => {
       </Heading>
 
       <Flex flexDirection="column" gap={4}>
-        {/* The user is subscribed */}
         {isSubscribed ? (
           <Flex flexDirection={"column"} alignItems="center" gap={4}>
             <Button
@@ -211,7 +202,7 @@ const Home: NextPage = () => {
             </Button>
             <Button
               leftIcon={<FaBellSlash />}
-              onClick={handleUnsubscribe}
+              onClick={unsubscribe}
               variant="outline"
               isDisabled={!isW3iInitialized || !account}
               colorScheme="red"
@@ -222,47 +213,30 @@ const Home: NextPage = () => {
               Unsubscribe
             </Button>
           </Flex>
-        ) : !account ? (
-          // The user is not subscribed and not registered
-          <Flex flexDirection={"column"} alignItems="center" gap={4}>
-            <Tooltip
-              label={
-                !Boolean(address)
-                  ? "Connect your wallet first."
-                  : "Register your account."
-              }
-              hasArrow
-              rounded="lg"
-              hidden={Boolean(identityKey)}
-            >
-              <Button
-                leftIcon={<BsPersonFillCheck />}
-                variant="outline"
-                onClick={handleRegistration}
-                isDisabled={!Boolean(address)}
-                rounded="full"
-                w="fit-content"
-              >
-                Register
-              </Button>
-            </Tooltip>
-          </Flex>
         ) : (
-          // The user is not subscribed and but is registered
-          <Button
-            leftIcon={<FaBell />}
-            onClick={handleSubscribe}
-            colorScheme="cyan"
-            rounded="full"
-            variant="outline"
-            w="fit-content"
-            alignSelf="center"
-            isLoading={isSubscribing}
-            loadingText="Subscribing..."
-            isDisabled={!Boolean(account)}
+          <Tooltip
+            label={
+              !Boolean(address)
+                ? "Connect your wallet first."
+                : "Register your account."
+            }
+            hidden={Boolean(account)}
           >
-            Subscribe
-          </Button>
+            <Button
+              leftIcon={<FaBell />}
+              onClick={subscribe}
+              colorScheme="cyan"
+              rounded="full"
+              variant="outline"
+              w="fit-content"
+              alignSelf="center"
+              isLoading={isSubscribing}
+              loadingText="Subscribing..."
+              isDisabled={!Boolean(address) || !Boolean(account)}
+            >
+              Subscribe
+            </Button>
+          </Tooltip>
         )}
 
         {isSubscribed && (
