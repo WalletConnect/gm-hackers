@@ -15,9 +15,9 @@ Subscriptions to dapp notifications are synced across all devices that use the s
 
 ## Hacker guide
 
-### Watch the tutorial guide 🖥️ 
-https://www.loom.com/share/a7001711b8a94500b827a9d2655c8654?sid=1a36ccfa-9ee8-42a5-a882-9b78ac6e846a
+### Watch the tutorial guide 🖥️
 
+https://www.loom.com/share/a7001711b8a94500b827a9d2655c8654?sid=1a36ccfa-9ee8-42a5-a882-9b78ac6e846a
 
 ### Deploy the example dapp
 
@@ -51,6 +51,11 @@ Now you should have a fully functioning dapp that is capable of sending notifica
 First, test that you can subscribe to notifications by going to your dapp's public URL, connect your wallet, sign the SIWE message in your wallet, and press subscribe. Approximately every 12 seconds you should see a "New block" notification in the dapp's UI.
 
 To quality for bounties, notifications must be visible [app.web3inbox.com](https://app.web3inbox.com) or one of our sample wallets that supports Web3Inbox notifications. Note that these automated notifications will only be sent to your account if you have the UI open and with the same account connected.
+
+Sample wallets to test notifications:
+
+- [iOS](https://testflight.apple.com/join/09bTAryp)
+- [Android](https://appdistribution.firebase.google.com/testerapps/1:1056012215045:android:1c076c984136751211cd6c/releases/410ohp8retc9o?utm_source=firebase-console)
 
 ### Sending notifications
 
