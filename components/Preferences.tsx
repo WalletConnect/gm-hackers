@@ -76,7 +76,7 @@ function Preferences() {
                 justifyContent="space-between"
                 gap={4}
               >
-                <FormLabel htmlFor={scopeKey}>{scopeKey}</FormLabel>
+                <FormLabel htmlFor={scopeKey}>{scope.name}</FormLabel>
                 <Switch
                   id={scopeKey}
                   defaultChecked={(scope as any).enabled}
