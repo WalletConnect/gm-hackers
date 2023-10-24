@@ -20,7 +20,7 @@ import "@web3inbox/widget-react/dist/compiled.css";
 
 import { useAccount, usePublicClient, useSignMessage } from "wagmi";
 import { FaBell, FaBellSlash, FaPause, FaPlay } from "react-icons/fa";
-import { BsPersonFillCheck, BsSendFill } from "react-icons/bs";
+import { BsSendFill } from "react-icons/bs";
 import useSendNotification from "../utils/useSendNotification";
 import { useInterval } from "usehooks-ts";
 import Preferences from "../components/Preferences";
@@ -95,10 +95,9 @@ const Home: NextPage = () => {
   }, [signMessage, registerIdentity, account]);
 
   useEffect(() => {
-    if (!identityKey) {
-      handleRegistration();
-    }
-  }, [handleRegistration, identityKey]);
+    // register even if an identity key exists, to account for stale keys
+    handleRegistration();
+  }, [handleRegistration]);
 
   // handleSendNotification will send a notification to the current user and includes error handling.
   // If you don't want to use this hook and want more flexibility, you can use sendNotification.
@@ -109,7 +108,8 @@ const Home: NextPage = () => {
         body: "Hack it until you make it!",
         icon: `${window.location.origin}/WalletConnect-blue.svg`,
         url: window.location.origin,
-        type: "promotional",
+	// ID retrieved from explorer api
+        type: "ba0e9ab1-e194-4780-8fc5-3c8abd9678e2",
       });
     }
   }, [handleSendNotification, isSubscribed]);
