@@ -108,7 +108,8 @@ const Home: NextPage = () => {
         body: "Hack it until you make it!",
         icon: `${window.location.origin}/WalletConnect-blue.svg`,
         url: window.location.origin,
-        type: "promotional",
+	// ID retrieved from explorer api
+        type: "ba0e9ab1-e194-4780-8fc5-3c8abd9678e2",
       });
     }
   }, [handleSendNotification, isSubscribed]);
