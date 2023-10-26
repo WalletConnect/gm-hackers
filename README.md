@@ -124,6 +124,31 @@ npm run dev
 npm run build
 ```
 
+## Expose domain
+The aforementioned `did.json` file needs to be hosted on a publically available domain. Although Vercel and the like work great for the actual deployment, any dev working with notify might like a hot-reloadable deployment. This is where tunnels come in. 
+
+Follow the following instructions to expose your app from localhost to be publically available:
+
+[Instructions adapted from Cloudflare](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/#use-trycloudflare)
+
+1. Download `cloudflared` utility:
+    * MacOS: `brew install cloudflared`
+	* Ubuntu/Debian: `apt install cloudflared`
+	* Windows: [Download from here](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+2. Run your app in localhost
+```sh
+npm run dev
+```
+3. Expose your app
+```sh
+cloudflared tunnel --url http://localhost:3000
+```
+
+Once you've got that running, you can access your local app from a public domain that looks like:
+```
+https://some-combination-of-words.trycloudflare.com
+```
+
 ## Hack ideas
 
 - A DeFi app that sends notifications for positions being liquidated, claimable rewards, etc.
