@@ -134,7 +134,7 @@ Follow the following instructions to expose your app from localhost to be public
 1. Download `cloudflared` utility:
     * MacOS: `brew install cloudflared`
 	* Ubuntu/Debian: `apt install cloudflared`
-	* Windows: [here](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+	* Windows: [Download from here](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
 2. Run your app in localhost
 ```sh
 npm run dev
