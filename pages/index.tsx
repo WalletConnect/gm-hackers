@@ -99,6 +99,14 @@ const Home: NextPage = () => {
     handleRegistration();
   }, [handleRegistration]);
 
+  const handleSubscribe = useCallback(async () => {
+    if(!identityKey) {
+      await handleRegistration();
+    }
+
+    await subscribe();
+  }, [subscribe, identityKey])
+
   // handleSendNotification will send a notification to the current user and includes error handling.
   // If you don't want to use this hook and want more flexibility, you can use sendNotification.
   const handleTestNotification = useCallback(async () => {
@@ -224,7 +232,7 @@ const Home: NextPage = () => {
           >
             <Button
               leftIcon={<FaBell />}
-              onClick={subscribe}
+              onClick={handleSubscribe}
               colorScheme="cyan"
               rounded="full"
               variant="outline"
