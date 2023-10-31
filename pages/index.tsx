@@ -37,6 +37,7 @@ const Home: NextPage = () => {
   const isW3iInitialized = useInitWeb3InboxClient({
     projectId,
     domain: appDomain,
+    isLimited: process.env.NODE_ENV == "production",
   });
   const {
     account,
