@@ -27,17 +27,17 @@ https://www.loom.com/share/a7001711b8a94500b827a9d2655c8654?sid=1a36ccfa-9ee8-42
    - [Create repo & Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWalletConnect%2Fgm-hackers&env=NEXT_PUBLIC_PROJECT_ID&envDescription=Get%20your%20Project%20ID%20on%20WalletConnect%20Cloud.&envLink=https%3A%2F%2Fcloud.walletconnect.com%2F)
    - [Create repo & Deploy to Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/WalletConnect/gm-hackers)
    - Fork/clone this repo and deploy yourself
-4. Back in the WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API Step 1, provide your public URL as the dapp URL. Click Save.
-5. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
-6. Next, you will need to host the two files on this page at the `/.well-known/` directory of your public URL. You can do this by saving them to the `/public/.well-known/` directory of your fork of this template repo. Note that you will need to overwrite the two files that already exist.
+4. Back in the WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API > Configuration > `DAPP INFORMATION`, provide your public URL as the dapp URL.
+5. Under the same section, next to Notification types, click on the "Add Notification Type" button and add a title and description for your notification type. This is the type of notification that your app will publish.
+   For example, if you are going to send promotional content as notification, you might want to add a notification type called "Promotional" with a description "Promotional content from the XYZ Team.".
+6. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
+7. Next, you will need to host `did.json` file on this page at the `/.well-known/` directory of your public URL. You can do this by saving them to the `/public/.well-known/` directory of your fork of this template repo. Note that you will need to overwrite the existing `did.json` file.
 
    - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
-   - Download `wc-notify-config.json` (Step 3: “Download template”) to `/public/.well-known/wc-notify-config.json`
-     - Update the `description` field in `wc-notify-config.json` to the description of your app.
    - Update your `NEXT_PUBLIC_APP_DOMAIN` environment variable to include the hostname of your deployment.
    - Deploy your changes in `/public/.well-known/` to your public URL (e.g. by committing and pushing).
 
-7. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
+8. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
 
 ### Managing environment variables
 
@@ -125,26 +125,31 @@ npm run build
 ```
 
 ## Expose domain
-The aforementioned `did.json` file needs to be hosted on a publically available domain. Although Vercel and the like work great for the actual deployment, any dev working with notify might like a hot-reloadable deployment. This is where tunnels come in. 
 
-Follow the following instructions to expose your app from localhost to be publically available:
+The aforementioned `did.json` file needs to be hosted on a publicly available domain. Although Vercel and the like work great for the actual deployment, any dev working with notify might like a hot-reloadable deployment. This is where tunnels come in.
+
+Follow the following instructions to expose your app from localhost to be publicly available:
 
 [Instructions adapted from Cloudflare](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/#use-trycloudflare)
 
 1. Download `cloudflared` utility:
-    * MacOS: `brew install cloudflared`
-	* Ubuntu/Debian: `apt install cloudflared`
-	* Windows: [Download from here](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+   - MacOS: `brew install cloudflared`
+   - Ubuntu/Debian: `apt install cloudflared`
+   - Windows: [Download from here](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
 2. Run your app in localhost
+
 ```sh
 npm run dev
 ```
+
 3. Expose your app
+
 ```sh
 cloudflared tunnel --url http://localhost:3000
 ```
 
 Once you've got that running, you can access your local app from a public domain that looks like:
+
 ```
 https://some-combination-of-words.trycloudflare.com
 ```
