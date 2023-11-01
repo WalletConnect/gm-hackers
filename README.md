@@ -72,6 +72,8 @@ Once you've got that running, you can access your local app from a public domain
 https://some-combination-of-words.trycloudflare.com
 ```
 
+Make sure this tunnel is running in the background while you are testing your app. If the tunnel is closed, you will need to update the dapp url and use the updated `did.json` file from [WalletConnect Cloud](https://cloud.walletconnect.com).
+
 Once you've got that running, you can now use this domain and similar configuration to test your app with notify:
 
 1. Head over to [WalletConnect Cloud](https://cloud.walletconnect.com) and Sign in or Sign up if you don't have an account.
