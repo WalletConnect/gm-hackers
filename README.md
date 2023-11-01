@@ -19,76 +19,30 @@ Subscriptions to dapp notifications are synced across all devices that use the s
 
 https://www.loom.com/share/a7001711b8a94500b827a9d2655c8654?sid=1a36ccfa-9ee8-42a5-a882-9b78ac6e846a
 
-## Running locally
+### Deploy the example dapp
 
-Install the app's dependencies:
-
-```bash
-npm i
-```
-
-## Develop
-
-For locally testing the app, you will need to expose your localhost to a public domain. See the [Expose domain](#expose-domain) section for instructions.
-
-```bash
-npm run dev
-```
-
-## Build
-
-For deploying the app to a public URL, refer to the [Deploy](#deploy-the-example-dapp) section.
-
-```bash
-npm run build
-```
-
-## Expose domain
-
-The `did.json` file needs to be hosted on a publicly available domain. Although Vercel and similar alternatives work great for the actual deployment, any dev working with Notify API might like a hot-reloadable deployment. This is where tunnels come in.
-Follow the following instructions to expose your app from localhost to be publicly available:
-
-[Instructions adapted from Cloudflare](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/#use-trycloudflare)
-
-1. Download `cloudflared` utility:
-   - MacOS: `brew install cloudflared`
-   - Ubuntu/Debian: `apt install cloudflared`
-   - Windows: [Download from here](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
-2. Run your app in localhost
-
-```sh
-npm run dev
-```
-
-3. Expose your app
-
-```sh
-cloudflared tunnel --url http://localhost:3000
-```
-
-Once you've got that running, you can access your local app from a public domain that looks like:
-
-```
-https://some-combination-of-words.trycloudflare.com
-```
-
-Make sure this tunnel is running in the background while you are testing your app. If the tunnel is closed, you will need to update the dapp url and use the updated `did.json` file from [WalletConnect Cloud](https://cloud.walletconnect.com).
-
-Once you've got that running, you can now use this domain and similar configuration to test your app with notify:
-
-1. Head over to [WalletConnect Cloud](https://cloud.walletconnect.com) and Sign in or Sign up if you don't have an account.
+1. Head over [WalletConnect Cloud](https://cloud.walletconnect.com) and Sign in or Sign up if you don't have an account.
 2. Create a project and take note of your Project ID.
-3. You will need to set the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2.
-4. Back in WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API > Configuration > `DAPP INFORMATION`, provide your cloudflare URL as the dapp URL.
-5. Under the same section, next to Notification types, click on the "Add Notification Type" button and add a title and description for your notification type. This is the type of notification that your app will publish.
-   For example, if you are going to send promotional content as notification, you might want to add a notification type called "Promotional" with a description "Promotional content from the XYZ Team.".
-   Click the copy button next to your newly created notification type to copy its ID. Replace the existing ID in `/pages/index.tsx` Line 120 with your new ID.
-6. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret to the `.env.local` file as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
-7. Next, you need to paste the `did.json` in the /.well-known/ directory. Save it to the `/public/.well-known/` directory. Be sure to replace the existing did.json file.
+3. Deploy your app to a public URL. Note you will need to set the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2. Some options to create your repo and deploy to a public URL include:
+   - [Create repo & Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWalletConnect%2Fgm-hackers&env=NEXT_PUBLIC_PROJECT_ID&envDescription=Get%20your%20Project%20ID%20on%20WalletConnect%20Cloud.&envLink=https%3A%2F%2Fcloud.walletconnect.com%2F)
+   - [Create repo & Deploy to Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/WalletConnect/gm-hackers)
+   - Fork/clone this repo and deploy yourself
+4. Back in the WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API Step 1, provide your public URL as the dapp URL. Click Save.
+5. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
+6. Next, you will need to host the two files on this page at the `/.well-known/` directory of your public URL. You can do this by saving them to the `/public/.well-known/` directory of your fork of this template repo. Note that you will need to overwrite the two files that already exist.
 
    - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
+   - Download `wc-notify-config.json` (Step 3: “Download template”) to `/public/.well-known/wc-notify-config.json`
+     - Update the `description` field in `wc-notify-config.json` to the description of your app.
+   - Update your `NEXT_PUBLIC_APP_DOMAIN` environment variable to include the hostname of your deployment.
+   - Deploy your changes in `/public/.well-known/` to your public URL (e.g. by committing and pushing).
 
-8. Once the new files are saved, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
+7. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
+
+### Managing environment variables
+
+- [Vercel Environment variables](https://vercel.com/docs/projects/environment-variables)
+- [Netlify Environment variables](https://docs.netlify.com/environment-variables/overview/)
 
 ### Test and view notifications
 
@@ -150,27 +104,50 @@ Sample wallets to test notifications:
     console.log(result);
     ```
 
-### Deploy the example dapp
+## Running locally
 
-1. Head over to [WalletConnect Cloud](https://cloud.walletconnect.com).
-2. Deploy your app to a public URL. Note you will need to update the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2. Some options to create your repo and deploy to a public URL include:
-   - [Create repo & Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWalletConnect%2Fgm-hackers&env=NEXT_PUBLIC_PROJECT_ID&envDescription=Get%20your%20Project%20ID%20on%20WalletConnect%20Cloud.&envLink=https%3A%2F%2Fcloud.walletconnect.com%2F)
-   - [Create repo & Deploy to Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/WalletConnect/gm-hackers)
-   - Fork/clone this repo and deploy yourself
-3. Back in WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API > Configuration > `DAPP INFORMATION`, update your public URL as the dapp URL.
-4. Copy the secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
-5. Next, you need to host the updated `did.json` file on your public URL in the /.well-known/ directory. Save it to the /public/.well-known/ directory in your fork of this template repository. Be sure to replace the existing did.json file.
+Install the app's dependencies:
 
-   - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
-   - Update your `NEXT_PUBLIC_APP_DOMAIN` environment variable to include the hostname of your deployment.
-   - Deploy your changes in `/public/.well-known/` to your public URL (e.g. by committing and pushing).
+```bash
+npm i
+```
 
-6. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
+## Develop
 
-### Managing environment variables
+```bash
+npm run dev
+```
 
-- [Vercel Environment variables](https://vercel.com/docs/projects/environment-variables)
-- [Netlify Environment variables](https://docs.netlify.com/environment-variables/overview/)
+## Build
+
+```bash
+npm run build
+```
+
+## Expose domain
+The aforementioned `did.json` file needs to be hosted on a publically available domain. Although Vercel and the like work great for the actual deployment, any dev working with notify might like a hot-reloadable deployment. This is where tunnels come in. 
+
+Follow the following instructions to expose your app from localhost to be publically available:
+
+[Instructions adapted from Cloudflare](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/#use-trycloudflare)
+
+1. Download `cloudflared` utility:
+    * MacOS: `brew install cloudflared`
+	* Ubuntu/Debian: `apt install cloudflared`
+	* Windows: [Download from here](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+2. Run your app in localhost
+```sh
+npm run dev
+```
+3. Expose your app
+```sh
+cloudflared tunnel --url http://localhost:3000
+```
+
+Once you've got that running, you can access your local app from a public domain that looks like:
+```
+https://some-combination-of-words.trycloudflare.com
+```
 
 ## Hack ideas
 
