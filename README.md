@@ -19,6 +19,62 @@ Subscriptions to dapp notifications are synced across all devices that use the s
 
 https://www.loom.com/share/a7001711b8a94500b827a9d2655c8654?sid=1a36ccfa-9ee8-42a5-a882-9b78ac6e846a
 
+## Running locally
+
+Install the app's dependencies:
+
+```bash
+npm i
+```
+
+## Develop
+
+```bash
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Expose domain
+
+The `did.json` file needs to be hosted on a publicly available domain. Although Vercel and the like work great for the actual deployment, any dev working with notify might like a hot-reloadable deployment. This is where tunnels come in.
+Follow the following instructions to expose your app from localhost to be publicly available:
+
+[Instructions adapted from Cloudflare](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/#use-trycloudflare)
+
+1. Download `cloudflared` utility:
+   - MacOS: `brew install cloudflared`
+   - Ubuntu/Debian: `apt install cloudflared`
+   - Windows: [Download from here](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+2. Run your app in localhost
+
+```sh
+npm run dev
+```
+
+3. Expose your app
+
+```sh
+cloudflared tunnel --url http://localhost:3000
+```
+
+Once you've got that running, you can access your local app from a public domain that looks like:
+
+```
+https://some-combination-of-words.trycloudflare.com
+```
+
+Once you've got that running, you can now use this domain and similar configuration to test your app with notify:
+
+1. Head over [WalletConnect Cloud](https://cloud.walletconnect.com) and Sign in or Sign up if you don't have an account.
+2. Create a project and take note of your Project ID.
+3. You will need to set the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2.
+4.
+
 ### Deploy the example dapp
 
 1. Head over [WalletConnect Cloud](https://cloud.walletconnect.com) and Sign in or Sign up if you don't have an account.
@@ -30,6 +86,7 @@ https://www.loom.com/share/a7001711b8a94500b827a9d2655c8654?sid=1a36ccfa-9ee8-42
 4. Back in the WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API > Configuration > `DAPP INFORMATION`, provide your public URL as the dapp URL.
 5. Under the same section, next to Notification types, click on the "Add Notification Type" button and add a title and description for your notification type. This is the type of notification that your app will publish.
    For example, if you are going to send promotional content as notification, you might want to add a notification type called "Promotional" with a description "Promotional content from the XYZ Team.".
+   Click the copy button next to your newly created notification type to copy the notification type ID. Replace the existing ID in pages/index.tsx Line 120 with your new ID.
 6. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
 7. Next, you will need to host `did.json` file on this page at the `/.well-known/` directory of your public URL. You can do this by saving them to the `/public/.well-known/` directory of your fork of this template repo. Note that you will need to overwrite the existing `did.json` file.
 
@@ -103,56 +160,6 @@ Sample wallets to test notifications:
     const result = await notifyRes.json();
     console.log(result);
     ```
-
-## Running locally
-
-Install the app's dependencies:
-
-```bash
-npm i
-```
-
-## Develop
-
-```bash
-npm run dev
-```
-
-## Build
-
-```bash
-npm run build
-```
-
-## Expose domain
-
-The aforementioned `did.json` file needs to be hosted on a publicly available domain. Although Vercel and the like work great for the actual deployment, any dev working with notify might like a hot-reloadable deployment. This is where tunnels come in.
-
-Follow the following instructions to expose your app from localhost to be publicly available:
-
-[Instructions adapted from Cloudflare](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/#use-trycloudflare)
-
-1. Download `cloudflared` utility:
-   - MacOS: `brew install cloudflared`
-   - Ubuntu/Debian: `apt install cloudflared`
-   - Windows: [Download from here](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
-2. Run your app in localhost
-
-```sh
-npm run dev
-```
-
-3. Expose your app
-
-```sh
-cloudflared tunnel --url http://localhost:3000
-```
-
-Once you've got that running, you can access your local app from a public domain that looks like:
-
-```
-https://some-combination-of-words.trycloudflare.com
-```
 
 ## Hack ideas
 
