@@ -88,7 +88,7 @@ Once you've got that running, you can now use this domain and similar configurat
    For example, if you are going to send promotional content as notification, you might want to add a notification type called "Promotional" with a description "Promotional content from the XYZ Team.".
    Click the copy button next to your newly created notification type to copy the notification type ID. Replace the existing ID in pages/index.tsx Line 120 with your new ID.
 6. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
-7. Next, you will need to host `did.json` file on this page at the `/.well-known/` directory of your public URL. You can do this by saving them to the `/public/.well-known/` directory of your fork of this template repo. Note that you will need to overwrite the existing `did.json` file.
+7. Next, you need to host the `did.json` file on your public URL in the /.well-known/ directory. Save it to the /public/.well-known/ directory in your fork of this template repository. Be sure to replace the existing did.json file.
 
    - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
    - Update your `NEXT_PUBLIC_APP_DOMAIN` environment variable to include the hostname of your deployment.
