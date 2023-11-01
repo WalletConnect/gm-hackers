@@ -82,7 +82,7 @@ Once you've got that running, you can now use this domain and similar configurat
 4. Back in WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API > Configuration > `DAPP INFORMATION`, provide your cloudflare URL as the dapp URL.
 5. Under the same section, next to Notification types, click on the "Add Notification Type" button and add a title and description for your notification type. This is the type of notification that your app will publish.
    For example, if you are going to send promotional content as notification, you might want to add a notification type called "Promotional" with a description "Promotional content from the XYZ Team.".
-   Click the copy button next to your newly created notification type to copy its ID. Replace the existing ID in `/pages/index.tsx` Line 120 with your new ID.
+   After saving, click the copy button next to your newly created notification type to copy its ID. Replace the existing ID in `/pages/index.tsx` Line 120 with your new ID.
 6. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret to the `.env.local` file as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
 7. Next, you need to paste the `did.json` in the /.well-known/ directory. Save it to the `/public/.well-known/` directory. Be sure to replace the existing did.json file.
 
