@@ -70,36 +70,19 @@ https://some-combination-of-words.trycloudflare.com
 
 Once you've got that running, you can now use this domain and similar configuration to test your app with notify:
 
-1. Head over [WalletConnect Cloud](https://cloud.walletconnect.com) and Sign in or Sign up if you don't have an account.
+1. Head over to [WalletConnect Cloud](https://cloud.walletconnect.com) and Sign in or Sign up if you don't have an account.
 2. Create a project and take note of your Project ID.
 3. You will need to set the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2.
-4.
-
-### Deploy the example dapp
-
-1. Head over [WalletConnect Cloud](https://cloud.walletconnect.com) and Sign in or Sign up if you don't have an account.
-2. Create a project and take note of your Project ID.
-3. Deploy your app to a public URL. Note you will need to set the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2. Some options to create your repo and deploy to a public URL include:
-   - [Create repo & Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWalletConnect%2Fgm-hackers&env=NEXT_PUBLIC_PROJECT_ID&envDescription=Get%20your%20Project%20ID%20on%20WalletConnect%20Cloud.&envLink=https%3A%2F%2Fcloud.walletconnect.com%2F)
-   - [Create repo & Deploy to Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/WalletConnect/gm-hackers)
-   - Fork/clone this repo and deploy yourself
-4. Back in the WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API > Configuration > `DAPP INFORMATION`, provide your public URL as the dapp URL.
+4. Back in WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API > Configuration > `DAPP INFORMATION`, provide your cloudflare URL as the dapp URL.
 5. Under the same section, next to Notification types, click on the "Add Notification Type" button and add a title and description for your notification type. This is the type of notification that your app will publish.
    For example, if you are going to send promotional content as notification, you might want to add a notification type called "Promotional" with a description "Promotional content from the XYZ Team.".
-   Click the copy button next to your newly created notification type to copy the notification type ID. Replace the existing ID in pages/index.tsx Line 120 with your new ID.
-6. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
-7. Next, you need to host the `did.json` file on your public URL in the /.well-known/ directory. Save it to the /public/.well-known/ directory in your fork of this template repository. Be sure to replace the existing did.json file.
+   Click the copy button next to your newly created notification type to copy its ID. Replace the existing ID in `/pages/index.tsx` Line 120 with your new ID.
+6. Still on Notify API section, you should see a `Notify API Secret`. Copy this secret to the `.env.local` file as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
+7. Next, you need to paste the `did.json` in the /.well-known/ directory. Save it to the `/public/.well-known/` directory. Be sure to replace the existing did.json file.
 
    - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
-   - Update your `NEXT_PUBLIC_APP_DOMAIN` environment variable to include the hostname of your deployment.
-   - Deploy your changes in `/public/.well-known/` to your public URL (e.g. by committing and pushing).
 
-8. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
-
-### Managing environment variables
-
-- [Vercel Environment variables](https://vercel.com/docs/projects/environment-variables)
-- [Netlify Environment variables](https://docs.netlify.com/environment-variables/overview/)
+8. Once the new files are saved, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
 
 ### Test and view notifications
 
@@ -160,6 +143,28 @@ Sample wallets to test notifications:
     const result = await notifyRes.json();
     console.log(result);
     ```
+
+### Deploy the example dapp
+
+1. Head over to [WalletConnect Cloud](https://cloud.walletconnect.com).
+2. Deploy your app to a public URL. Note you will need to update the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2. Some options to create your repo and deploy to a public URL include:
+   - [Create repo & Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWalletConnect%2Fgm-hackers&env=NEXT_PUBLIC_PROJECT_ID&envDescription=Get%20your%20Project%20ID%20on%20WalletConnect%20Cloud.&envLink=https%3A%2F%2Fcloud.walletconnect.com%2F)
+   - [Create repo & Deploy to Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/WalletConnect/gm-hackers)
+   - Fork/clone this repo and deploy yourself
+3. Back in WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API > Configuration > `DAPP INFORMATION`, update your public URL as the dapp URL.
+4. Copy the secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
+5. Next, you need to host the `did.json` file on your public URL in the /.well-known/ directory. Save it to the /public/.well-known/ directory in your fork of this template repository. Be sure to replace the existing did.json file.
+
+   - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
+   - Update your `NEXT_PUBLIC_APP_DOMAIN` environment variable to include the hostname of your deployment.
+   - Deploy your changes in `/public/.well-known/` to your public URL (e.g. by committing and pushing).
+
+6. Once the new files are deployed, on the APIs tab in Cloud, find the toggle switch next to the Notify API section and switch it on. You should see a success toast: "Notify configuration successfully verified"
+
+### Managing environment variables
+
+- [Vercel Environment variables](https://vercel.com/docs/projects/environment-variables)
+- [Netlify Environment variables](https://docs.netlify.com/environment-variables/overview/)
 
 ## Hack ideas
 
