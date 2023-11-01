@@ -41,7 +41,7 @@ npm run build
 
 ## Expose domain
 
-The `did.json` file needs to be hosted on a publicly available domain. Although Vercel and the like work great for the actual deployment, any dev working with notify might like a hot-reloadable deployment. This is where tunnels come in.
+The `did.json` file needs to be hosted on a publicly available domain. Although Vercel and the like work great for the actual deployment, any dev working with Notify API might like a hot-reloadable deployment. This is where tunnels come in.
 Follow the following instructions to expose your app from localhost to be publicly available:
 
 [Instructions adapted from Cloudflare](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/#use-trycloudflare)
