@@ -153,7 +153,7 @@ Sample wallets to test notifications:
    - Fork/clone this repo and deploy yourself
 3. Back in WalletConnect Cloud, navigate to your project's APIs tab. Under Notify API > Configuration > `DAPP INFORMATION`, update your public URL as the dapp URL.
 4. Copy the secret into your deployment as the `NOTIFY_API_SECRET` environment variable. Make sure to update the environment variables on your local environment as well as on your deployment platform.
-5. Next, you need to host the `did.json` file on your public URL in the /.well-known/ directory. Save it to the /public/.well-known/ directory in your fork of this template repository. Be sure to replace the existing did.json file.
+5. Next, you need to host the updated `did.json` file on your public URL in the /.well-known/ directory. Save it to the /public/.well-known/ directory in your fork of this template repository. Be sure to replace the existing did.json file.
 
    - Download `did.json` (Step 2: “Download did:web”) and place it at `/public/.well-known/did.json`
    - Update your `NEXT_PUBLIC_APP_DOMAIN` environment variable to include the hostname of your deployment.
