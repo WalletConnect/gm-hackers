@@ -32,6 +32,7 @@ npm i
 For locally testing the app, you will need to expose your localhost to a public domain. See the [Expose domain](#expose-domain) section for instructions.
 
 ```bash
+cp .env.local.example env.local
 npm run dev
 ```
 
