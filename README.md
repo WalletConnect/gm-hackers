@@ -17,7 +17,7 @@ Subscriptions to dapp notifications are synced across all devices that use the s
 
 ### Watch the tutorial guide 🖥️
 
-https://www.loom.com/share/a7001711b8a94500b827a9d2655c8654?sid=1a36ccfa-9ee8-42a5-a882-9b78ac6e846a
+[![Youtube Link for tutorial](https://img.youtube.com/vi/m7n-MqgDPBY/0.jpg)](https://www.youtube.com/watch?v=m7n-MqgDPBY)
 
 ## Running locally
 
