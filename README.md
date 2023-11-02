@@ -17,7 +17,11 @@ Subscriptions to dapp notifications are synced across all devices that use the s
 
 ### Watch the tutorial guide 🖥️
 
-[![Youtube Link for tutorial](https://img.youtube.com/vi/m7n-MqgDPBY/0.jpg)](https://www.youtube.com/watch?v=m7n-MqgDPBY)
+<div align="left">
+      <a href="https://www.youtube.com/watch?v=m7n-MqgDPBY" alt="Youtube Link for tutorial">
+         <img src="https://github.com/WalletConnect/gm-hackers/assets/26746725/577c7530-2230-45f2-9bc6-3f9eb79d37d1" width="557" alt="Youtube Link for tutorial">
+      </a>
+</div>
 
 ## Running locally
 
