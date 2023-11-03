@@ -155,7 +155,7 @@ Sample wallets to test notifications:
     console.log(result);
     ```
 
-### Deploy the example dapp
+## Deploy the example dapp
 
 1. Head over to [WalletConnect Cloud](https://cloud.walletconnect.com).
 2. Deploy your app to a public URL. Note you will need to update the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2. Some options to create your repo and deploy to a public URL include:
