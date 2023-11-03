@@ -161,7 +161,7 @@ Sample wallets to test notifications:
 ## Deploy the example dapp
 
 1. Head over to [WalletConnect Cloud](https://cloud.walletconnect.com).
-2. Deploy your app to a public URL. Note you will need to update the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2. Some options to create your repo and deploy to a public URL include:
+2. Deploy your app to a public URL. Note you will need to update the `NEXT_PUBLIC_PROJECT_ID` environment variable to your Project ID from step #2 in [Expose Domain](#expose-domain). Some options to create your repo and deploy to a public URL include:
    - [Create repo & Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWalletConnect%2Fgm-hackers&env=NEXT_PUBLIC_PROJECT_ID&envDescription=Get%20your%20Project%20ID%20on%20WalletConnect%20Cloud.&envLink=https%3A%2F%2Fcloud.walletconnect.com%2F)
    - [Create repo & Deploy to Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/WalletConnect/gm-hackers)
    - Fork/clone this repo and deploy yourself
