@@ -117,7 +117,7 @@ const Home: NextPage = () => {
         body: "Hack it until you make it!",
         icon: `${window.location.origin}/WalletConnect-blue.svg`,
         url: window.location.origin,
-	// ID retrieved from explorer api
+	// ID retrieved from explorer api - Copy your notification type from WalletConnect Cloud and replace the default value below
         type: "ba0e9ab1-e194-4780-8fc5-3c8abd9678e2",
       });
     }
