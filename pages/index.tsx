@@ -178,7 +178,7 @@ const Home: NextPage = () => {
         }
       />
       <Heading alignSelf={"center"} textAlign={"center"} mb={6}>
-        Web3Inbox hooks
+        SuperChain eXchange Blockchain Technology
       </Heading>
 
       <Flex flexDirection="column" gap={4}>
@@ -194,7 +194,7 @@ const Home: NextPage = () => {
               isLoading={isSending}
               loadingText="Sending..."
             >
-              Send test notification
+              Send GSC20 notification
             </Button>
             <Button
               leftIcon={isBlockNotificationEnabled ? <FaPause /> : <FaPlay />}
@@ -226,8 +226,8 @@ const Home: NextPage = () => {
           <Tooltip
             label={
               !Boolean(address)
-                ? "Connect your wallet first."
-                : "Register your account."
+                ? "Connect your GSC20 wallets first."
+                : "Register your GSCx account."
             }
             hidden={Boolean(account)}
           >
