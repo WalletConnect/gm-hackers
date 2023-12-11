@@ -50,9 +50,6 @@ npm run build
 
 ## Expose domain
 
-> [!WARNING]
-> Cloudflare is currently facing [issues](https://www.cloudflarestatus.com/) under which `cloudflared` is also affected. As a temporary measure, refer to the [Deploy](#deploy-the-example-dapp) section instead.
-
 The `did.json` file needs to be hosted on a publicly available domain. Although Vercel and similar alternatives work great for the actual deployment, any dev working with Notify API might like a hot-reloadable deployment. This is where tunnels come in.
 Follow the following instructions to expose your app from localhost to be publicly available:
 
